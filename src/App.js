@@ -1,15 +1,13 @@
 import React from "react";
 import { Layout, Menu } from "antd";
-import {
-  BellOutlined,
-  FileOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { BellOutlined, FileOutlined, UserOutlined } from "@ant-design/icons";
 import { Switch, Route, Link, Redirect } from "react-router-dom";
 import Feed from "./screens/main/Feed";
 import Contact from "./screens/main/Contact";
 import { connect } from "react-redux";
 import Login from "./screens/auth/Login";
+import SignUp from "./screens/auth/SignUp";
+import Auth from "./screens/auth/Auth";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -31,7 +29,13 @@ class App extends React.Component {
   render() {
     const { collapsed } = this.state;
     return !this.props.user.isAuthenticated ? (
-      <Login />
+      <Auth>
+        <Switch>
+          <Route exact path="/" component={Login} />
+          <Route path="/register" component={SignUp} />
+          <Route render={() => <Redirect to="/" />} />
+        </Switch>
+      </Auth>
     ) : (
       <Layout style={{ minHeight: "100vh" }}>
         <Sider

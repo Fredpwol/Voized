@@ -1,7 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { Layout, Image, Typography, Form, Input, Checkbox, Button } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+
+
+import { loginUser } from "../../actions";
+
+
+
+
+
+
+
+
+
+
 //<a href='https://www.freepik.com/vectors/background'>Background vector created by freepik - www.freepik.com</a>
 //<a href='https://www.freepik.com/vectors/school'>School vector created by pch.vector - www.freepik.com</a>
 //<a href='https://www.freepik.com/vectors/background'>Background vector created by Harryarts - www.freepik.com</a>
@@ -9,7 +23,9 @@ import { Link } from "react-router-dom";
 //<a href='https://www.freepik.com/vectors/people'>People vector created by pch.vector - www.freepik.com</a>
 //<a href='https://www.freepik.com/vectors/school'>School vector created by pch.vector - www.freepik.com</a>
 //<span>Photo by <a href="https://unsplash.com/@dexezekiel?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Dex Ezekiel</a> on <a href="https://unsplash.com/?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
-const Login = () => {
+const Login = ({loginUser}) => {
+    const [submitting, setSubmitting] = useState(false);
+    const toggleSubmit = () => setSubmitting(!submitting)
   return (
     <div
       style={{
@@ -24,7 +40,8 @@ const Login = () => {
         initialValues={{ remember: true }}
         className="login-form"
         name="normal_login"
-        onFinish={(values) => console.log("values", values)}
+        onFinishFailed={toggleSubmit}
+        onFinish={({username, password}) => setTimeout(() => loginUser({username, password}), 3000)}
       >
         <Form.Item
           name="username"
@@ -50,8 +67,8 @@ const Login = () => {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="submit-button">
-            Submit
+          <Button type="primary" htmlType="submit" className="submit-button" loading={submitting} onClick={toggleSubmit}>
+            Login
           </Button>
           <p style={{ marginTop: "10px" }}>
             New Here? <Link to="/register">Register</Link>
@@ -62,4 +79,5 @@ const Login = () => {
   );
 };
 
-export default Login;
+
+export default connect(null, { loginUser })(Login);

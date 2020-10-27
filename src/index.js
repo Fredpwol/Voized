@@ -9,6 +9,12 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 import reducers from "./reducer";
 // import reportWebVitals from './reportWebVitals';
+const CustomTitleBar = window.require("custom-electron-titlebar");
+
+const titleBar = new CustomTitleBar.Titlebar({
+  backgroundColor: CustomTitleBar.Color.fromHex("#478bff"),
+})
+titleBar.updateTitle("Voized")
 
 ReactDOM.render(
   <React.StrictMode>

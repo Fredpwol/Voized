@@ -2,9 +2,12 @@ import React from "react";
 import { Layout, Menu } from "antd";
 import { BellOutlined, FileOutlined, UserOutlined } from "@ant-design/icons";
 import { Switch, Route, Link, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+
+
+
 import Feed from "./screens/main/Feed";
 import Contact from "./screens/main/Contact";
-import { connect } from "react-redux";
 import Login from "./screens/auth/Login";
 import SignUp from "./screens/auth/SignUp";
 import Auth from "./screens/auth/Auth";
@@ -42,12 +45,11 @@ class App extends React.Component {
           collapsible
           collapsed={collapsed}
           onCollapse={this.onCollapse}
-          style={{ overflow: "auto", height: "100vh" }}
+          style={{ overflow: "auto", height: "100vh", marginTop:"0px" }}
         >
-          <div className="logo" />
           <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
             <Menu.Item key="1" icon={<BellOutlined />}>
-              <Link to="/">Home</Link>
+              <Link to="/">Activites</Link>
             </Menu.Item>
             <Menu.Item key="2" icon={<UserOutlined />}>
               <Link to="/contact">Contact</Link>

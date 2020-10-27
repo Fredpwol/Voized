@@ -1,4 +1,13 @@
 .siderImage{
-    background-image: url("../images/sideImage.jpg");
+    background-image: url("../images/15021.jpg");
     background-size: cover;
+    height: 100%;
+}
+.sider{
+    width: 45%;
+    box-shadow: 0px 0px 10px 10px rgb(206, 217, 221);
+}
+.submit-button{
+    width: 150px;
+    border-radius: 50px;
 }

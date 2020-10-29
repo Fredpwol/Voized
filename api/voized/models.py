@@ -12,7 +12,7 @@ class User(db.Model):
 
     def __init__(self, username, password, email)
         self.username = username
-        self.password = bcrypt.generate_password_hash(password).decode()
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
         self.email = email
 
     def validate_passowrd(self, password):

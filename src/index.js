@@ -20,13 +20,11 @@ const titleBar = new CustomTitleBar.Titlebar({
 })
 titleBar.updateTitle("Voized")
 ReactDOM.render(
-  <React.StrictMode>
     <Provider store={createStore(reducers)}>
       <Router>
         <App />
       </Router>
-    </Provider>
-  </React.StrictMode>,
+    </Provider>,
   document.getElementById("root")
 );
 

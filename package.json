@@ -59,5 +59,6 @@
     "appId": "com.voice_chat_app"
   },
   "main": "public/electron.js",
-  "homepage": "./"
+  "homepage": "./",
+  "proxy":"http://localhost:5000"
 }

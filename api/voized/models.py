@@ -10,12 +10,12 @@ class User(db.Model):
     email = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)
 
-    def __init__(self, username, password, email)
+    def __init__(self, username, password, email):
         self.username = username
         self.password = bcrypt.generate_password_hash(password).decode('utf-8')
         self.email = email
 
-    def validate_passowrd(self, password):
+    def validate_password(self, password):
         return bcrypt.check_password_hash(self.password, password)
 
     def generate_web_token(self, exp=259200):

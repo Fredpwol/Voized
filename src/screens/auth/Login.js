@@ -4,17 +4,7 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
-
 import { loginUser } from "../../actions";
-
-
-
-
-
-
-
-
-
 
 //<a href='https://www.freepik.com/vectors/background'>Background vector created by freepik - www.freepik.com</a>
 //<a href='https://www.freepik.com/vectors/school'>School vector created by pch.vector - www.freepik.com</a>
@@ -23,9 +13,9 @@ import { loginUser } from "../../actions";
 //<a href='https://www.freepik.com/vectors/people'>People vector created by pch.vector - www.freepik.com</a>
 //<a href='https://www.freepik.com/vectors/school'>School vector created by pch.vector - www.freepik.com</a>
 //<span>Photo by <a href="https://unsplash.com/@dexezekiel?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Dex Ezekiel</a> on <a href="https://unsplash.com/?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
-const Login = ({loginUser}) => {
-    const [submitting, setSubmitting] = useState(false);
-    const toggleSubmit = () => setSubmitting(!submitting)
+const Login = ({ loginUser }) => {
+  const [submitting, setSubmitting] = useState(false);
+  const toggleSubmit = () => setSubmitting(!submitting);
   return (
     <div
       style={{
@@ -41,7 +31,21 @@ const Login = ({loginUser}) => {
         className="login-form"
         name="normal_login"
         onFinishFailed={toggleSubmit}
-        onFinish={({username, password}) => setTimeout(() => loginUser({username, password}), 3000)}
+        onFinish={({ username, password }) => {
+          fetch("/user/login", {
+            method: "POST",
+            headers: new Headers({ 
+              "Content-Type": "application/json", 
+              "Accept":"application/json",
+              "Authorization": "Basic "+ btoa(`${username}:${password}`) }),
+            body:JSON.stringify({username, password}),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              console.log(data);
+            });
+          setTimeout(() => loginUser({ username, password }), 3000);
+        }}
       >
         <Form.Item
           name="username"
@@ -67,7 +71,13 @@ const Login = ({loginUser}) => {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="submit-button" loading={submitting} onClick={toggleSubmit}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="submit-button"
+            loading={submitting}
+            onClick={toggleSubmit}
+          >
             Login
           </Button>
           <p style={{ marginTop: "10px" }}>
@@ -78,6 +88,5 @@ const Login = ({loginUser}) => {
     </div>
   );
 };
-
 
 export default connect(null, { loginUser })(Login);

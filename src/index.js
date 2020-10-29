@@ -6,8 +6,9 @@ import { blue } from "@ant-design/colors"
 import "antd/dist/antd.css";
 import "antd/dist/antd.less"
 import "./assets/css/main.css"
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
+import ReduxThunk from "redux-thunk";
 import reducers from "./reducer";
 // import reportWebVitals from './reportWebVitals';
 const CustomTitleBar = window.require("custom-electron-titlebar");
@@ -20,7 +21,7 @@ const titleBar = new CustomTitleBar.Titlebar({
 })
 titleBar.updateTitle("Voized")
 ReactDOM.render(
-    <Provider store={createStore(reducers)}>
+    <Provider store={createStore(reducers, {}, applyMiddleware(ReduxThunk) )}>
       <Router>
         <App />
       </Router>

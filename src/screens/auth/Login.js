@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout, Image, Typography, Form, Input, Checkbox, Button } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
@@ -13,9 +13,7 @@ import { loginUser } from "../../actions";
 //<a href='https://www.freepik.com/vectors/people'>People vector created by pch.vector - www.freepik.com</a>
 //<a href='https://www.freepik.com/vectors/school'>School vector created by pch.vector - www.freepik.com</a>
 //<span>Photo by <a href="https://unsplash.com/@dexezekiel?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Dex Ezekiel</a> on <a href="https://unsplash.com/?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
-const Login = ({ loginUser }) => {
-  const [submitting, setSubmitting] = useState(false);
-  const toggleSubmit = () => setSubmitting(!submitting);
+const Login = ({ loginUser, errorMessage, submitting }) => {
   return (
     <div
       style={{
@@ -30,23 +28,15 @@ const Login = ({ loginUser }) => {
         initialValues={{ remember: true }}
         className="login-form"
         name="normal_login"
-        onFinishFailed={toggleSubmit}
         onFinish={({ username, password }) => {
-          fetch("/user/login", {
-            method: "POST",
-            headers: new Headers({ 
-              "Content-Type": "application/json", 
-              "Accept":"application/json",
-              "Authorization": "Basic "+ btoa(`${username}:${password}`) }),
-            body:JSON.stringify({username, password}),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              console.log(data);
-            });
-          setTimeout(() => loginUser({ username, password }), 3000);
+          loginUser({ username, password });
         }}
       >
+        <div className="center-text">
+          <Typography.Text type="danger">
+            {errorMessage}
+          </Typography.Text>
+        </div>
         <Form.Item
           name="username"
           rules={[{ required: true, message: "Please input your username" }]}
@@ -76,7 +66,6 @@ const Login = ({ loginUser }) => {
             htmlType="submit"
             className="submit-button"
             loading={submitting}
-            onClick={toggleSubmit}
           >
             Login
           </Button>
@@ -89,4 +78,9 @@ const Login = ({ loginUser }) => {
   );
 };
 
-export default connect(null, { loginUser })(Login);
+const mapStateToProps = (state) => ({
+  errorMessage: state.auth.loginError,
+  submitting: state.auth.loggingIn
+});
+
+export default connect(mapStateToProps, { loginUser })(Login);

@@ -19,6 +19,7 @@ export const loginUser = ({ username, password }) => {
               username: data.username,
               email: data.email,
               token: data.token,
+              userBgColor: data.bg_color
             },
             type: LOGIN_USER,
           });

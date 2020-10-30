@@ -11,6 +11,7 @@ const initialState = {
   loginError:"",
   SignupError:"",
   loggingIn:false,
+  userBgColor:"green"
 };
 
 export default (state = initialState, action) => {
@@ -27,6 +28,7 @@ export default (state = initialState, action) => {
         password: action.payload.password,
         email: action.payload.email,
         token: action.payload.token,
+        userBgColor:action.payload.userBgColor,
         isAuthenticated: true,
         loggingIn:false
       };

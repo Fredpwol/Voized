@@ -28,7 +28,7 @@ def login_user():
     if (not user) or (not user.validate_password(password)):
         return jsonify({"status": "error", "message":"Invaid username or password!"}), 400
     token = user.generate_web_token(9999999999)
-    return jsonify({ "status" :'success',"username": user.username,"email":user.email, "token": token}), 200
+    return jsonify({ "status" :'success',"username": user.username,"email":user.email, "token": token, "bg_color":user.bg_color}), 200
 
 
 @app.route("/user/register", methods = ["POST"])

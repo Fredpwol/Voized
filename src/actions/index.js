@@ -1,4 +1,4 @@
-import { LOGIN_ERROR, LOGIN_USER, LOGGING_IN } from "./constants";
+import { LOGIN_ERROR, LOGIN_USER, LOGGING_IN, LOGOUT_USER } from "./constants";
 
 export const loginUser = ({ username, password }) => {
   return (disbatch) => {
@@ -29,3 +29,11 @@ export const loginUser = ({ username, password }) => {
       });
   };
 };
+
+export const logoutUser = () => {
+  return(
+    {
+      type:LOGOUT_USER
+    }
+  )
+}

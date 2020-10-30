@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 
-import { LOGGING_IN, LOGIN_ERROR, LOGIN_USER } from "../actions/constants";
+import { LOGGING_IN, LOGIN_ERROR, LOGIN_USER, LOGOUT_USER } from "../actions/constants";
 
 const initialState = {
   token: localStorage.getItem("token"),
@@ -11,7 +11,7 @@ const initialState = {
   loginError:"",
   SignupError:"",
   loggingIn:false,
-  userBgColor:"green"
+  userBgColor:localStorage.getItem("bgColor") 
 };
 
 export default (state = initialState, action) => {
@@ -22,6 +22,7 @@ export default (state = initialState, action) => {
       localStorage.setItem("password", action.payload.password)
       localStorage.setItem("email", action.payload.email)
       localStorage.setItem("isAuthenticated", true)
+      localStorage.setItem("bgColor", action.payload.userBgColor)
       return {
         ...state,
         username: action.payload.username,
@@ -43,6 +44,21 @@ export default (state = initialState, action) => {
       return{
         ...state,
         loggingIn:true
+      }
+    case LOGOUT_USER:
+      localStorage.setItem("token", "")
+      localStorage.setItem("username", "")
+      localStorage.setItem("password", "")
+      localStorage.setItem("email", "")
+      localStorage.setItem("isAuthenticated", false)
+      localStorage.setItem("bgColor","" )
+      return {
+        ...state,
+        username: "",
+        password: "",
+        email: "",
+        token: null,
+        isAuthenticated:false
       }
     default:
       return state;

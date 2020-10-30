@@ -4,10 +4,11 @@ import { LogoutOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { blue, presetPrimaryColors } from "@ant-design/colors";
 
+import { logoutUser } from "../../actions";
 
-import { getNameInitials } from "../../utils"
+import { getNameInitials } from "../../utils";
 
-const UserScreen = ({user:{userBgColor, username}}) => {
+const UserScreen = ({ user: { userBgColor, username }, logoutUser }) => {
   return (
     <div>
       <div className="profile-bg">
@@ -22,23 +23,29 @@ const UserScreen = ({user:{userBgColor, username}}) => {
         >
           {getNameInitials(username)}
         </Avatar>
-        <Typography.Title style={{color:"#ffffff", marginLeft:"20%", marginBottom:"5px"}}>
+        <Typography.Title
+          style={{ color: "#ffffff", marginLeft: "20%", marginBottom: "5px" }}
+        >
           {username}
         </Typography.Title>
       </div>
       <div>
-      <Button type="primary" danger icon={<LogoutOutlined />} style={{right:10, position:"absolute"}} >
-      Logout
-    </Button>
+        <Button
+          type="primary"
+          danger
+          icon={<LogoutOutlined />}
+          style={{ right: 10, position: "absolute" }}
+          onClick={() => logoutUser()}
+        >
+          Logout
+        </Button>
       </div>
     </div>
   );
 };
 
-const mapStateToProps = state => (
-  {
-    user: state.auth
-  }
-)
+const mapStateToProps = (state) => ({
+  user: state.auth,
+});
 
-export default connect(mapStateToProps,null)(UserScreen);
+export default connect(mapStateToProps, { logoutUser })(UserScreen);

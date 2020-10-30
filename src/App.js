@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Menu } from "antd";
+import { Layout, Menu, Avatar } from "antd";
 import { BellOutlined, FileOutlined, UserOutlined } from "@ant-design/icons";
 import { Switch, Route, Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
@@ -11,6 +11,7 @@ import Contact from "./screens/main/Contact";
 import Login from "./screens/auth/Login";
 import SignUp from "./screens/auth/SignUp";
 import Auth from "./screens/auth/Auth";
+import UserScreen from "./screens/main/UserScreen";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -47,14 +48,17 @@ class App extends React.Component {
           onCollapse={this.onCollapse}
           style={{ overflow: "auto", height: "100vh", marginTop:"0px" }}
         >
-          <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
-            <Menu.Item key="1" icon={<BellOutlined />}>
+          <Menu theme="dark" mode="inline">
+            <Menu.Item key="1" icon={<Avatar size="small" style={{marginRight:"20px", backgroundColor:"orange"}}  >F</Avatar>}>
+              <Link to="/user">{"    "+this.props.user.username}</Link>
+            </Menu.Item>
+            <Menu.Item key="2" icon={<BellOutlined />}>
               <Link to="/">Activites</Link>
             </Menu.Item>
-            <Menu.Item key="2" icon={<UserOutlined />}>
+            <Menu.Item key="3" icon={<UserOutlined />}>
               <Link to="/contact">Contact</Link>
             </Menu.Item>
-            <Menu.Item key="9" icon={<FileOutlined />}>
+            <Menu.Item key="4" icon={<FileOutlined />}>
               Files
             </Menu.Item>
           </Menu>
@@ -65,6 +69,7 @@ class App extends React.Component {
             <Switch>
               <Route exact path="/" component={Feed} />
               <Route path="/contact" component={Contact} />
+              <Route path="/user" component={UserScreen} />
               <Route render={() => <Redirect to="/" />} />
             </Switch>
           </Content>

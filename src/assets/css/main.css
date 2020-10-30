@@ -15,3 +15,8 @@
 .center-text{
     text-align: center;
 }
+.profile-bg{
+    background: linear-gradient(#002766, #0265c2);
+    height: 30%;
+    color: white;
+}

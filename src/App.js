@@ -50,15 +50,6 @@ const App = (props) => {
       }
     ]
   }
-  // useEffect(() => {
-  //   if(props.user.username){
-  //     getMenuData(props.user.username).forEach((data, index) => {
-  //       if(data.link === location.pathname){
-  //         setSelected(index)
-  //       }
-  //     })
-  //   }
-  // }, [location.pathname])
 
   const onCollapse = (collapsed) => {
     setCollapsed(collapsed);

@@ -13,9 +13,9 @@ const UserScreen = ({ user: { userBgColor, username }, logoutUser }) => {
     <div>
       <div className="profile-bg">
         <Avatar
-          size={{ xs: 24, sm: 30, md: 90, lg: 130, xl: 160, xxl: 200 }}
+          size={{ xs: 24, sm: 40, md: 90, lg: 130, xl: 160, xxl: 200 }}
           style={{
-            bottom: "-15vh",
+            bottom: "-100px",
             marginLeft: "15px",
             fontSize: "15vh",
             backgroundColor: presetPrimaryColors[userBgColor],

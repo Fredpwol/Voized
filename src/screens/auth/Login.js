@@ -65,6 +65,7 @@ const Login = ({ loginUser, errorMessage, submitting }) => {
             type="primary"
             htmlType="submit"
             className="submit-button"
+            shape="round"
             loading={submitting}
           >
             Login

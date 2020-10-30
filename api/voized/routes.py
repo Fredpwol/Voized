@@ -49,6 +49,6 @@ def register_user():
         db.session.add(user)
         db.session.commit()
 
-        return jsonify({ "status": "success","username": username, "token": token, "exp_sec":259200}), 201
+        return jsonify({ "status" :'success',"username": user.username,"email":user.email, "token": token, "bg_color":user.bg_color}), 201
     except Exception as e:
         return jsonify({"status": "error", "message": "An unknwon error occured!"})

@@ -1,10 +1,12 @@
 import React from "react";
-import { Layout, Image, Typography, Form, Input, Checkbox, Button } from "antd";
+import { Typography, Form, Input, Button } from "antd";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { $ } from "custom-electron-titlebar/lib/common/dom";
+import { connect } from "react-redux";
 
-const SignUp = () => {
+import { signupUser } from "../../actions";
+
+const SignUp = ({ errorMessage, submitting, signupUser }) => {
   return (
     <div
       style={{
@@ -14,19 +16,33 @@ const SignUp = () => {
         backgroundColor: "white",
       }}
     >
-      <Typography.Title>Register</Typography.Title>
+      <Typography.Title>SignUp</Typography.Title>
       <Form
         initialValues={{ remember: true }}
         className="login-form"
         name="normal_login"
-        onFinish={(values) => console.log("values", values)}
+        onFinish={(values) => signupUser(values)}
       >
-          <Form.Item name="email" rules={[{required:true, message:"Email is a required field"}, {type:"email", message:"Please enter a valid email address"}]}>
-            <Input type="email" placeholder="Email Address" prefix={<MailOutlined />} />
-          </Form.Item>
+        <div className="center-text">
+          <Typography.Text type="danger">{errorMessage}</Typography.Text>
+        </div>
+        <Form.Item
+          name="email"
+          rules={[
+            { required: true, message: "Email is a required field" },
+            { type: "email", message: "Please enter a valid email address" },
+          ]}
+        >
+          <Input
+            type="email"
+            placeholder="Email Address"
+            prefix={<MailOutlined />}
+          />
+        </Form.Item>
         <Form.Item
           name="username"
-          rules={[{ required: true, message: "Please input your username" }]}
+          rules={[{ required: true, message: "Please input your username" },
+                  {min:4, message:"username should be more than 3 characters."}]}
         >
           <Input
             placeholder="username"
@@ -35,7 +51,8 @@ const SignUp = () => {
         </Form.Item>
         <Form.Item
           name="password"
-          rules={[{ required: true, message: "Please input a password" }]}
+          rules={[{ required: true, message: "Please input a password" },
+                      {min:6, message:"Password should be a minimum of 6 characters."}]}
         >
           <Input.Password
             placeholder="password"
@@ -71,12 +88,15 @@ const SignUp = () => {
             type="password"
           />
         </Form.Item>
-        <Form.Item name="remember" valuePropName="checked">
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="submit-button">
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="submit-button"
+            shape="round"
+            loading={submitting}
+          >
             Submit
           </Button>
           <p style={{ marginTop: "10px" }}>
@@ -88,4 +108,8 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+const mapStateToProps = (state) => ({
+  errorMessage: state.auth.signupError,
+  submitting: state.auth.loggingIn,
+});
+export default connect(mapStateToProps, { signupUser })(SignUp);

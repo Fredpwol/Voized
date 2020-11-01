@@ -10,5 +10,4 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:pandroid016@local
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
-
 from voized import routes

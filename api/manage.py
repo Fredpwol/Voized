@@ -3,8 +3,9 @@ from flask_script import  Manager
 from flask_migrate import Migrate, MigrateCommand
 
 from voized import app, db
+from voized.config import DevelopmentConfig
 
-app.config.from_object(os.environ["APP_SETTINGS"])
+app.config.from_object(DevelopmentConfig)
 
 manager = Manager(app)
 migrate = Migrate(app=app, db=db)

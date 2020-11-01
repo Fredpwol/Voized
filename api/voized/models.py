@@ -27,6 +27,18 @@ class User(db.Model):
         self.email = email
         self.bg_color = self.get_random_color()
 
+    @property
+    def serialize(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "email": self.email,
+            "bg_color": self.bg_color,
+            "profile_pic": self.profile_pic,
+            "contacts": [ friend.serialize for friend in self.contacts ],
+            "rooms": [ room.serialize for room in self.rooms ]
+        }
+
     def validate_password(self, password):
         return bcrypt.check_password_hash(self.password, password)
 
@@ -63,7 +75,7 @@ class User(db.Model):
         return user
 
     def __repr__(self):
-        return f"User({username})"
+        return f"User({self.username})"
 
 
 
@@ -73,6 +85,14 @@ class Room(db.Model):
     name = db.Column(db.String(50), nullable=False)
     group_image = db.Column(db.String(255), nullable=True)
     no_users = db.Column(db.Integer, default=0, nullable=False)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "groupImage": self.group_image,
+            "noUsers": self.no_users
+        }
 
 
     def __repr__(self):

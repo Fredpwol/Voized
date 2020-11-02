@@ -2,6 +2,7 @@ from voized import app, db
 from voized.models import User
 from flask import request, jsonify,make_response, g
 from flask_httpauth import HTTPBasicAuth
+from sqlalchemy import literal
 
 auth = HTTPBasicAuth()
 
@@ -59,3 +60,12 @@ def get_user(id):
     user = User.query.get(id)
     return jsonify(user.serialize)
     
+
+@app.route("/search")
+def search_user():
+    try:
+        query = request.args['q']
+        users = User.query.filter(User.username.ilike("%" + query + "%"))
+        return jsonify([ user.serialize for user in users])
+    except KeyError:
+        return jsonify({"status": "error", "message": "Please input a valid url argument."})

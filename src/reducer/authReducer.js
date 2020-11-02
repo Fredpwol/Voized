@@ -31,7 +31,8 @@ export default (state = initialState, action) => {
         token: action.payload.token,
         userBgColor:action.payload.userBgColor,
         isAuthenticated: true,
-        loggingIn:false
+        loggingIn:false,
+        loginError:""
       };
     
     case LOGIN_ERROR:
@@ -54,7 +55,7 @@ export default (state = initialState, action) => {
         email: action.payload.email,
         token: action.payload.token,
         userBgColor:action.payload.userBgColor,
-        loginError:"",
+        signupError:"",
         isAuthenticated: true,
         loggingIn:false
       };

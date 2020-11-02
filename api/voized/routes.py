@@ -20,7 +20,7 @@ def verify_password(username_or_token, password):
 def login_user():
     if request.method == "POST":
         print(request.json)
-    username = request.json.get('username')
+    username = request.json.get('username').lower().strip(" ")
     password = request.json.get('password')
     if username is None or password is None:
         return jsonify({"status": "error", "message":"Input a valid username or password!"}), 400
@@ -34,9 +34,9 @@ def login_user():
 @app.route("/user/register", methods = ["POST"])
 def register_user():
     try:
-        username = request.json.get('username')
+        username = request.json.get('username').lower().strip(" ")
         password = request.json.get('password')
-        email = request.json.get("email")
+        email = request.json.get("email").lower().strip(" ")
         if username is None or password is None:
             return {"status": "error", "message":"Input a valid username or password!"}, 400
         if  User.query.filter_by(username = username).first():
@@ -57,5 +57,5 @@ def register_user():
 @app.route("/user/<int:id>", methods=["GET"])
 def get_user(id):
     user = User.query.get(id)
-    print(user)
     return jsonify(user.serialize)
+    

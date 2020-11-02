@@ -19,3 +19,36 @@
     height: 30%;
     color: white;
 }
+.content-body{
+}
+.center-item{
+    display: flex;
+    justify-content: center;
+}
+.title-text{
+    color: #1890FF;
+    font-size: xx-large;
+}
+.content-head{ 
+    display: flex;
+    background-color:white;
+    justify-content:space-between;
+    align-items:center;
+    height: 50px;
+    padding-top: 10px;
+}
+.user-item{
+    display: flex;
+    padding:20px;
+    border: #ccd0d6 solid 1px;
+    background-color: white;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius: 10px;
+}
+.item-data{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-left: 15px;
+}

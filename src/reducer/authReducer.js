@@ -54,6 +54,7 @@ export default (state = initialState, action) => {
         email: action.payload.email,
         token: action.payload.token,
         userBgColor:action.payload.userBgColor,
+        loginError:"",
         isAuthenticated: true,
         loggingIn:false
       };

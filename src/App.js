@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Layout, Menu, Avatar } from "antd";
-import { BellOutlined, FileOutlined, UserOutlined } from "@ant-design/icons";
+import { BellOutlined, FileOutlined, UserOutlined, TeamOutlined } from "@ant-design/icons";
 import { presetPrimaryColors } from "@ant-design/colors";
 import { Switch, Route, Link, Redirect, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
@@ -29,7 +29,7 @@ const App = (props) => {
         icon:(<Avatar
           size="small"
           style={{
-            marginRight: "20px",
+            marginRight: "25px",
             backgroundColor: presetPrimaryColors[props.user.userBgColor],
           }}
         >
@@ -47,6 +47,10 @@ const App = (props) => {
         icon:<UserOutlined />,
         title: "Contacts",
         link:"/contact"
+      },
+      {
+        icon: <TeamOutlined /> ,
+        title: "Rooms"
       }
     ]
   }
@@ -82,7 +86,7 @@ const App = (props) => {
       </Sider>
       <Layout className="site-layout">
         {/* <Header className="site-layout-background" style={{ padding: 0 }} /> */}
-        <Content>
+        <Content className="content-body">
           <Switch>
             <Route exact path="/" component={Feed} />
             <Route path="/contact" component={Contact} />

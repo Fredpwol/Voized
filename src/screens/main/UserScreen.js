@@ -8,11 +8,12 @@ import { logoutUser } from "../../actions";
 
 import { getNameInitials } from "../../utils";
 
-const UserScreen = ({ user: { userBgColor, username }, logoutUser }) => {
+const UserScreen = ({ user: { userBgColor, username, profileImage }, logoutUser }) => {
   return (
     <div>
       <div className="profile-bg">
         <Avatar
+          src={profileImage}
           size={{ xs: 24, sm: 40, md: 90, lg: 130, xl: 160, xxl: 200 }}
           style={{
             bottom: "-100px",

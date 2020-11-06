@@ -17,6 +17,7 @@ flask-migrate = "*"
 psycopg2 = "*"
 flask-script = "*"
 python-dotenv = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.8"

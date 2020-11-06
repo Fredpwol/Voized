@@ -1,5 +1,5 @@
 {
-  "name": "voice_chat_app",
+  "name": "Voized",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -7,11 +7,13 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "antd": "^4.7.3",
+    "antd-img-crop": "^3.13.2",
     "cross-env": "^7.0.2",
     "custom-electron-titlebar": "^3.2.5",
     "electron-is-dev": "^1.2.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-images-upload": "^1.2.8",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
@@ -57,7 +59,7 @@
   "description": "A voice chat desktop application",
   "author": "Fredrick Pwol",
   "build": {
-    "appId": "com.voice_chat_app"
+    "appId": "com.Voized"
   },
   "main": "public/electron.js",
   "homepage": "./",

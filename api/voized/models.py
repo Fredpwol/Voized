@@ -2,6 +2,7 @@ import random
 import time
 from voized import db, bcrypt, app
 from flask_login import UserMixin
+from flask import url_for
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired
 
 friends = db.Table("contacts", db.Column("user", db.Integer, db.ForeignKey(
@@ -39,9 +40,7 @@ class User(db.Model):
             "username": self.username,
             "email": self.email,
             "bg_color": self.bg_color,
-            "profile_pic": self.profile_pic,
-            "contacts": [friend.serialize for friend in self.contacts],
-            "rooms": [room.serialize for room in self.rooms]
+            "profile_pic": url_for("static", filename="profile_pic/"+self.profile_pic, _external=True) if self.profile_pic else "",
         }
 
     def validate_password(self, password):
@@ -73,12 +72,10 @@ class User(db.Model):
     def join_room(self, room):
         if not self.in_room(room):
             self.roooms.append(room)
-            room.no_user += 1
 
     def leave_room(self, room):
         if self.in_room(room):
             self.roooms.append(room)
-            room.no_user -= 1
 
     @staticmethod
     def verify_web_token(token):
@@ -89,7 +86,7 @@ class User(db.Model):
             return None
         except BadSignature:
             return None
-        user = User.query.filter_by(id=data["id"]).first()
+        user = User.query.get(data['id'])
         return user
 
     def __repr__(self):
@@ -113,15 +110,19 @@ class Room(db.Model):
         self.created_at = time.time()
 
     @property
-    def no_user(self):
-        return len(self.members)
+    def no_users(self):
+        return self.members.count()
 
+    @property
     def serialize(self):
         return {
             "id": self.id,
             "name": self.name,
             "groupImage": self.group_image,
-            "noUsers": self.no_users
+            "noUsers": self.no_users,
+            "category": self.category,
+            "description": self.description,
+            "createdAt": self.created_at
         }
 
     def __repr__(self):
@@ -144,9 +145,12 @@ class Calls(db.Model, CallMixins):
 
 class GroupCalls(db.Model, CallMixins):
     __tablename__ = "room_calls"
+
+    id = db.Column(db.Integer, primary_key=True)
     room = db.Column(db.Integer, db.ForeignKey("rooms.id"), nullable=False)
     to = db.relationship("User", secondary=group_calls, backref=db.backref(
-        "room_calls", lazy="dynamic"), lazy="dynamic")
+        "room_calls", lazy="dynamic"), primaryjoin=(group_calls.c.user_id == id), 
+        secondaryjoin=(group_calls.c.room_id == id), lazy="dynamic")
 
 
 class VoiceMails(db.Model, CallMixins):

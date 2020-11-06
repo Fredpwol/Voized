@@ -1,3 +1,5 @@
+@import '~antd/dist/antd.css';
+
 .siderImage{
     background-image: url("../images/15021.jpg");
     background-size: cover;
@@ -24,6 +26,7 @@
 .center-item{
     display: flex;
     justify-content: center;
+    width: 100%;
 }
 .title-text{
     color: #1890FF;

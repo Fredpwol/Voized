@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Menu, Avatar } from "antd";
-import { BellOutlined, FileOutlined, UserOutlined, TeamOutlined } from "@ant-design/icons";
+import { Layout, Menu, Avatar, Modal, Typography, message } from "antd";
+import {
+  BellOutlined,
+  FileOutlined,
+  UserOutlined,
+  TeamOutlined,
+} from "@ant-design/icons";
 import { presetPrimaryColors } from "@ant-design/colors";
 import { Switch, Route, Link, Redirect, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
+import ImageUploader from "react-images-upload";
 
 import Feed from "./screens/main/Feed";
 import Contact from "./screens/main/Contact";
@@ -12,51 +18,60 @@ import SignUp from "./screens/auth/SignUp";
 import Auth from "./screens/auth/Auth";
 import UserScreen from "./screens/main/UserScreen";
 import { getNameInitials } from "./utils";
+import { uploadImage, toggleNewRegister } from "./actions";
+import AvatarUpload from "./components/AvatarUpload";
 
 const { Header, Content, Footer, Sider } = Layout;
-
-
 
 const App = (props) => {
   const [collapsed, setCollapsed] = useState(false);
   const [selected, setSelected] = useState(1);
   const location = useLocation();
 
-
   const getMenuData = (username) => {
     return [
       {
-        icon:(<Avatar
-          size="small"
-          style={{
-            marginRight: "25px",
-            backgroundColor: presetPrimaryColors[props.user.userBgColor],
-          }}
-        >
-          {getNameInitials(username)}
-        </Avatar>),
+        icon: (
+          <Avatar
+            size="small"
+            src={props.user.profileImage}
+            style={{
+              marginRight: "25px",
+              backgroundColor: presetPrimaryColors[props.user.userBgColor],
+            }}
+          >
+            {getNameInitials(username)}
+          </Avatar>
+        ),
         title: "    " + username,
-        link:"/user"
+        link: "/user",
       },
       {
-        icon:<BellOutlined />,
-        title:"Activites",
-        link:"/"
+        icon: <BellOutlined />,
+        title: "Activites",
+        link: "/",
       },
       {
-        icon:<UserOutlined />,
+        icon: <UserOutlined />,
         title: "Contacts",
-        link:"/contact"
+        link: "/contact",
       },
       {
-        icon: <TeamOutlined /> ,
-        title: "Rooms"
-      }
-    ]
-  }
+        icon: <TeamOutlined />,
+        title: "Rooms",
+      },
+    ];
+  };
 
   const onCollapse = (collapsed) => {
     setCollapsed(collapsed);
+  };
+
+  const onDrop = (picture) => {
+    const form = new FormData();
+    form.append("file", picture[0]);
+    console.log(form);
+    props.uploadImage(form, props.user.id, props.user.token);
   };
   return !props.user.isAuthenticated ? (
     <Auth>
@@ -68,6 +83,20 @@ const App = (props) => {
     </Auth>
   ) : (
     <Layout style={{ minHeight: "95vh" }}>
+      <Modal
+        visible={props.appData.newRegister}
+        onClose={props.toggleNewRegister}
+        destroyOnClose
+        onOk={props.toggleNewRegister}
+        onCancel={props.toggleNewRegister}
+      >
+        <Typography.Title level={3} className="center-text">
+          Upload Profile Image
+        </Typography.Title>
+        <div style={{ marginLeft: "40%" }}>
+          <AvatarUpload />
+        </div>
+      </Modal>
       <Sider
         collapsible
         collapsed={collapsed}
@@ -75,13 +104,13 @@ const App = (props) => {
         style={{ overflow: "auto", marginTop: "0px" }}
       >
         <Menu theme="dark" mode="inline" defaultSelectedKeys={`${selected}`}>
-          {props.user.isAuthenticated ? getMenuData(props.user.username).map((data, index) => (
-            <Menu.Item icon={data.icon} key={`${index}`}>
-              <Link to={data.link}>{data.title}</Link>
-            </Menu.Item>
-          )): null
-          }
-          
+          {props.user.isAuthenticated
+            ? getMenuData(props.user.username).map((data, index) => (
+                <Menu.Item icon={data.icon} key={`${index}`}>
+                  <Link to={data.link}>{data.title}</Link>
+                </Menu.Item>
+              ))
+            : null}
         </Menu>
       </Sider>
       <Layout className="site-layout">
@@ -104,6 +133,9 @@ const App = (props) => {
 
 const mapStateToProps = (state) => ({
   user: state.auth,
+  appData: state.appData,
 });
 
-export default connect(mapStateToProps, null)(App);
+export default connect(mapStateToProps, { uploadImage, toggleNewRegister })(
+  App
+);

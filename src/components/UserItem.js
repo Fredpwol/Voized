@@ -1,32 +1,60 @@
 import React from "react";
-import { Avatar, Typography } from "antd";
-import { PhoneOutlined } from "@ant-design/icons";
+import { Avatar, Button, Typography } from "antd";
+import { PhoneOutlined, UserAddOutlined } from "@ant-design/icons";
 import { presetPrimaryColors } from "@ant-design/colors";
+import { connect } from "react-redux";
 
-const UserItem = () => {
+const UserItem = ({
+  title,
+  body,
+  status,
+  image,
+  leftComponent,
+  rightComponent,
+  _id,
+  userData
+}) => {
   return (
     <div className="user-item">
-      <Avatar size="large">F</Avatar>
+      <Avatar
+        size="large"
+        src={image?.src}
+        style={{ backgroundColor: presetPrimaryColors[image.bgColor] || "blue" }}
+      >
+        {image?.Acronym}
+      </Avatar>
       <div className="item-data">
         <div>
           <div>
             <Typography.Text style={{ fontWeight: "bold" }}>
-              Freddthink
+              {title}
             </Typography.Text>
             <Typography.Text type="success" style={{ marginLeft: "10px" }}>
-              Online
+              {status}
             </Typography.Text>
           </div>
-          <div>Hello</div>
+          <div>{body}</div>
         </div>
         <div>
-          <PhoneOutlined
+          {userData[_id] ?
+          (
+            <PhoneOutlined
             style={{ color: presetPrimaryColors.blue, fontSize: "25px" }}
           />
+          ):
+          (
+            <Button icon={<UserAddOutlined />}>
+              Add
+            </Button>
+          )
+          }
         </div>
       </div>
     </div>
   );
 };
+const mapStateToProps = (state) => ({
+  userData: state.userData,
+});
 
-export default UserItem;
+export default connect(mapStateToProps, null)(UserItem);

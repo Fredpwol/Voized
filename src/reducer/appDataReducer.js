@@ -3,7 +3,7 @@ import { NEW_REGISTER } from "../actions/constants";
 
 const initialState = { newRegister: false}
 
-export default (state = initialState, action) => {
+export default function (state = initialState, action){
     switch (action.type){
         case NEW_REGISTER:
             return {

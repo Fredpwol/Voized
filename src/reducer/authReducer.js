@@ -16,7 +16,7 @@ const initialState = {
   profileImage: localStorage.getItem("profileImage")
 };
 
-export default (state = initialState, action) => {
+export default function (state = initialState, action){
   switch (action.type) {
     case LOGIN_USER:
       localStorage.setItem("token", action.payload.token)

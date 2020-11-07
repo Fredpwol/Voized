@@ -1,29 +1,44 @@
 import React from "react";
 import { Avatar, Typography, Button } from "antd";
-import { LogoutOutlined } from "@ant-design/icons";
+import { LogoutOutlined, CameraOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { blue, presetPrimaryColors } from "@ant-design/colors";
 
-import { logoutUser } from "../../actions";
+import { logoutUser, toggleNewRegister } from "../../actions";
 
 import { getNameInitials } from "../../utils";
 
-const UserScreen = ({ user: { userBgColor, username, profileImage }, logoutUser }) => {
+const UserScreen = ({
+  user: { userBgColor, username, profileImage },
+  logoutUser,
+  toggleNewRegister,
+}) => {
   return (
     <div>
       <div className="profile-bg">
-        <Avatar
-          src={profileImage}
-          size={{ xs: 24, sm: 40, md: 90, lg: 130, xl: 160, xxl: 200 }}
+        <div style={{ border: "1px" }}>
+          <Avatar
+            src={profileImage}
+            size={{ xs: 24, sm: 40, md: 90, lg: 130, xl: 160, xxl: 200 }}
+            style={{
+              bottom: "-100px",
+              marginLeft: "15px",
+              fontSize: "15vh",
+              backgroundColor: presetPrimaryColors[userBgColor],
+            }}
+          >
+            {getNameInitials(username)}
+          </Avatar>
+        </div>
+        <CameraOutlined
+          onClick={toggleNewRegister}
           style={{
-            bottom: "-100px",
-            marginLeft: "15px",
-            fontSize: "15vh",
-            backgroundColor: presetPrimaryColors[userBgColor],
+            position: "relative",
+            fontSize: "25px",
+            marginLeft: "7%",
+            zIndex: 10,
           }}
-        >
-          {getNameInitials(username)}
-        </Avatar>
+        />
         <Typography.Title
           style={{ color: "#ffffff", marginLeft: "20%", marginBottom: "5px" }}
         >
@@ -49,4 +64,6 @@ const mapStateToProps = (state) => ({
   user: state.auth,
 });
 
-export default connect(mapStateToProps, { logoutUser })(UserScreen);
+export default connect(mapStateToProps, { logoutUser, toggleNewRegister })(
+  UserScreen
+);

@@ -18,7 +18,7 @@ import SignUp from "./screens/auth/SignUp";
 import Auth from "./screens/auth/Auth";
 import UserScreen from "./screens/main/UserScreen";
 import { getNameInitials } from "./utils";
-import { uploadImage, toggleNewRegister } from "./actions";
+import { uploadImage, toggleNewRegister, getContacts } from "./actions";
 import AvatarUpload from "./components/AvatarUpload";
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -28,6 +28,10 @@ const App = (props) => {
   const [selected, setSelected] = useState(1);
   const location = useLocation();
 
+  useEffect(() => {
+    props.getContacts(props.user.id, props.user.token)
+  },[])
+  
   const getMenuData = (username) => {
     return [
       {
@@ -101,7 +105,12 @@ const App = (props) => {
         collapsible
         collapsed={collapsed}
         onCollapse={onCollapse}
-        style={{ overflow: "auto", marginTop: "0px" }}
+        style={{
+          overflow: 'auto',
+          height: '100vh',
+          position: 'fixed',
+          left: 0,
+        }}
       >
         <Menu theme="dark" mode="inline" defaultSelectedKeys={`${selected}`}>
           {props.user.isAuthenticated
@@ -113,7 +122,7 @@ const App = (props) => {
             : null}
         </Menu>
       </Sider>
-      <Layout className="site-layout">
+      <Layout className="site-layout" style={{marginLeft:(collapsed ? "80px" :"200px")}} >
         {/* <Header className="site-layout-background" style={{ padding: 0 }} /> */}
         <Content className="content-body">
           <Switch>
@@ -136,6 +145,6 @@ const mapStateToProps = (state) => ({
   appData: state.appData,
 });
 
-export default connect(mapStateToProps, { uploadImage, toggleNewRegister })(
+export default connect(mapStateToProps, { uploadImage, toggleNewRegister, getContacts })(
   App
 );

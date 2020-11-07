@@ -7,3 +7,5 @@ export const SIGNUP_USER = "SIGNUP_USER";
 export const SIGNUP_ERROR = "SIGNUP_ERROR";
 export const NEW_REGISTER = "NEW_REGISTER";
 export const NEW_PROFILE_IMAGE = "NEW_PROFILE_IMAGE";
+export const GET_CONTACTS = "GET_CONTACTS";
+export const SEARCH_USERS = "SEARCH_USERS";

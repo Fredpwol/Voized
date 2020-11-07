@@ -1,4 +1,8 @@
-import { LOGIN_ERROR, LOGIN_USER, LOGGING_IN, LOGOUT_USER, SIGNUP_USER, SIGNUP_ERROR, NEW_REGISTER, NEW_PROFILE_IMAGE } from "./constants";
+import { LOGIN_ERROR, LOGIN_USER, LOGGING_IN, LOGOUT_USER, SIGNUP_USER, SIGNUP_ERROR, NEW_REGISTER, NEW_PROFILE_IMAGE, GET_CONTACTS, SEARCH_USERS } from "./constants";
+
+
+
+const ok = "success";
 
 export const loginUser = ({ username, password }) => {
   return (disbatch) => {
@@ -14,7 +18,7 @@ export const loginUser = ({ username, password }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.status === "success") {
+        if (data.status === ok) {
           disbatch({
             payload: {
               username: data.user.username,
@@ -47,7 +51,7 @@ export const signupUser = ({ username, password, email }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.status === "success") {
+        if (data.status === ok) {
           disbatch({
             payload: {
               username: data.user.username,
@@ -87,7 +91,7 @@ export const uploadImage = (form, id, token, callback) => {
     })
     .then(res => res.json())
     .then(data => {
-      if(data.status === "success"){
+      if(data.status === ok){
         disbatch({type: NEW_PROFILE_IMAGE, payload: data})
       }
       if (callback) callback(data)
@@ -103,3 +107,36 @@ export const toggleNewRegister = () => (
     type: NEW_REGISTER
   }
 )
+
+export const getContacts = ( id, token ) => {
+  return (disbatch) => {
+    fetch(`/user/${id}/contacts`, 
+    {
+      headers: new Headers({
+        "Authorization" : "Basic " + btoa(`${token}:no-password`)
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === ok){
+        disbatch({type: GET_CONTACTS, payload: { contacts: data.contacts}})
+      }
+    })
+  }
+}
+
+export const searchUsers = (username, token) => {
+  return (disbatch) => {
+    fetch(`user/search?q=${username}`, {
+      headers: new Headers({
+        "Authorization" : "Basic " + btoa(`${token}:no-password`)
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === ok){
+        disbatch({ type: SEARCH_USERS, payload: {search: data.users}})
+      }
+    })
+  }
+}

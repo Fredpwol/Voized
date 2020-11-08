@@ -9,3 +9,4 @@ export const NEW_REGISTER = "NEW_REGISTER";
 export const NEW_PROFILE_IMAGE = "NEW_PROFILE_IMAGE";
 export const GET_CONTACTS = "GET_CONTACTS";
 export const SEARCH_USERS = "SEARCH_USERS";
+export const CLEAR_SEARCH = "CLEAR_SEARCH";

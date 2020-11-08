@@ -1,4 +1,4 @@
-import { GET_CONTACTS, SEARCH_USERS } from "../actions/constants";
+import { CLEAR_SEARCH, GET_CONTACTS, LOGOUT_USER, SEARCH_USERS } from "../actions/constants";
 
 const initialState = {contacts: [], search:[], contactsId:{}};
 
@@ -8,7 +8,7 @@ export default function userDataReducer(state = initialState, action) {
         case GET_CONTACTS:
             let tempIds = {};
             action.payload.contacts.forEach((contact) => {
-                tempIds[contact.id] = true;
+                tempIds[contact._id] = true;
             } )
             return {
                 ...state,
@@ -20,6 +20,12 @@ export default function userDataReducer(state = initialState, action) {
                 ...state,
                 search : action.payload.search
             }
+        case CLEAR_SEARCH:
+            return {
+                ...state,
+                search: []
+            }
+
         default:
             return state;
     }

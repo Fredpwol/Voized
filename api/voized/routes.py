@@ -84,7 +84,9 @@ def get_user_contacts(id):
 @auth.login_required
 def get_contacts():
     try:
-        id = request.args.get("id")
+        id = request.args["id"]
+        if id == g.user.id:
+             return jsonify({"status": "error", "message":"Cannot add user to contact"}), 403
         contact = User.query.get(id)
         g.user.add_contact(contact)
         return jsonify(status="success", contacts=[contact.serialize for contact in g.user.contacts]), 201

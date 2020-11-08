@@ -36,7 +36,7 @@ class User(db.Model):
     @property
     def serialize(self):
         return {
-            "id": self.id,
+            "_id": self.id,
             "username": self.username,
             "email": self.email,
             "bg_color": self.bg_color,
@@ -58,10 +58,12 @@ class User(db.Model):
     def add_contact(self, user):
         if not self.is_contact(user):
             self.contacts.append(user)
+            db.session.commit()
 
     def remove_contact(self, user):
         if self.is_contact(user):
             self.contacts.remove(user)
+            db.session.commit()
 
     def is_contact(self, user):
         return self.contacts.filter(friends.c.friend == user.id).count() > 0
@@ -72,10 +74,12 @@ class User(db.Model):
     def join_room(self, room):
         if not self.in_room(room):
             self.roooms.append(room)
+            db.session.commit()
 
     def leave_room(self, room):
         if self.in_room(room):
             self.roooms.append(room)
+            db.session.commit()
 
     @staticmethod
     def verify_web_token(token):

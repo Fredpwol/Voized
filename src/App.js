@@ -30,7 +30,7 @@ const App = (props) => {
 
   useEffect(() => {
     props.getContacts(props.user.id, props.user.token)
-  },[])
+  },[props.user.id])
   
   const getMenuData = (username) => {
     return [

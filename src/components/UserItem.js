@@ -4,6 +4,9 @@ import { PhoneOutlined, UserAddOutlined } from "@ant-design/icons";
 import { presetPrimaryColors } from "@ant-design/colors";
 import { connect } from "react-redux";
 
+
+import { addContact } from "../actions";
+
 const UserItem = ({
   title,
   body,
@@ -12,6 +15,8 @@ const UserItem = ({
   leftComponent,
   rightComponent,
   _id,
+  user,
+  addContact,
   userData
 }) => {
   return (
@@ -36,14 +41,14 @@ const UserItem = ({
           <div>{body}</div>
         </div>
         <div>
-          {userData[_id] ?
+          {userData.contactsId[_id] ?
           (
             <PhoneOutlined
             style={{ color: presetPrimaryColors.blue, fontSize: "25px" }}
           />
           ):
           (
-            <Button icon={<UserAddOutlined />}>
+            <Button icon={<UserAddOutlined />} onClick={() => addContact(_id, user.token)}>
               Add
             </Button>
           )
@@ -55,6 +60,7 @@ const UserItem = ({
 };
 const mapStateToProps = (state) => ({
   userData: state.userData,
+  user: state.auth
 });
 
-export default connect(mapStateToProps, null)(UserItem);
+export default connect(mapStateToProps, { addContact })(UserItem);

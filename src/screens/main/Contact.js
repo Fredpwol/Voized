@@ -7,6 +7,8 @@ import Divider from "../../components/Divider";
 import { searchUsers } from "../../actions";
 import { getNameInitials } from "../../utils";
 
+{/* <a href='https://www.freepik.com/vectors/coffee'>Coffee vector created by pch.vector - www.freepik.com</a> 
+<a href='https://www.freepik.com/vectors/background'>Background vector created by tartila - www.freepik.com</a>*/}
 const Contact = ({ user, userData, searchUsers }) => {
   return (
     <div className="content-body">
@@ -21,27 +23,29 @@ const Contact = ({ user, userData, searchUsers }) => {
       </Layout.Header>
       <Divider />
       <div style={{ paddingTop: "10px" }}>
-        {userData.search.length !== 0 ? userData.search.map((user) => (
+        {userData.search.length !== 0 ? userData.search.map((result, index) => (
           <UserItem
-            title={user.username}
+            key={result.username+index}
+            title={result.username}
             image={{
-              src: user.profile_pic,
-              bgColor: user.bg_color,
-              _id:user.id,
-              Acronym: getNameInitials(user.username),
+              src: result.profile_pic,
+              bgColor: result.bg_color,
+              Acronym: getNameInitials(result.username),
             }}
-            body={user.email}
+            _id={result._id}
+            body={result.email}
           />
-        )) : userData.contacts.map((user) => (
+        )) : userData.contacts.map((contact, index) => (
             <UserItem
-              title={user.username}
+              key={contact.username+index}
+              title={contact.username}
               image={{
-                src: user.profile_pic,
-                bgColor: user.bg_color,
-                _id:user.id,
-                Acronym: getNameInitials(user.username),
+                src: contact.profile_pic,
+                bgColor: contact.bg_color,
+                Acronym: getNameInitials(contact.username),
               }}
-              body={user.email}
+              _id={contact._id}
+              body={contact.email}
             />)) }
       </div>
     </div>

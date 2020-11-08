@@ -1,4 +1,4 @@
-import { LOGIN_ERROR, LOGIN_USER, LOGGING_IN, LOGOUT_USER, SIGNUP_USER, SIGNUP_ERROR, NEW_REGISTER, NEW_PROFILE_IMAGE, GET_CONTACTS, SEARCH_USERS } from "./constants";
+import { LOGIN_ERROR, LOGIN_USER, LOGGING_IN, LOGOUT_USER, SIGNUP_USER, SIGNUP_ERROR, NEW_REGISTER, NEW_PROFILE_IMAGE, GET_CONTACTS, SEARCH_USERS, CLEAR_SEARCH } from "./constants";
 
 
 
@@ -25,7 +25,7 @@ export const loginUser = ({ username, password }) => {
               email: data.user.email,
               token: data.token,
               userBgColor: data.user.bg_color,
-              id: data.user.id,
+              id: data.user._id,
               profileImage: data.user.profile_pic
             },
             type: LOGIN_USER,
@@ -58,7 +58,7 @@ export const signupUser = ({ username, password, email }) => {
               email: data.user.email,
               token: data.token,
               userBgColor: data.user.bg_color,
-              id: data.user.id,
+              id: data.user._id,
               profileImage: data.user.profile_pic
             },
             type: SIGNUP_USER,
@@ -127,15 +127,36 @@ export const getContacts = ( id, token ) => {
 
 export const searchUsers = (username, token) => {
   return (disbatch) => {
-    fetch(`user/search?q=${username}`, {
+    if (username !== ""){
+      fetch(`/user/search?q=${username}`, {
+        headers: new Headers({
+          "Authorization" : "Basic " + btoa(`${token}:no-password`)
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === ok){
+          disbatch({ type: SEARCH_USERS, payload: {search: data.users}})
+        }
+      })
+    }
+    else{
+      disbatch({ type: CLEAR_SEARCH})
+    }
+  }
+}
+
+export const addContact = (id, token) => {
+  return (disbatch) => {
+    fetch(`/user/contacts/new?id=${id}`, {
       headers: new Headers({
         "Authorization" : "Basic " + btoa(`${token}:no-password`)
       })
     })
     .then(res => res.json())
     .then(data => {
-      if (data.status === ok){
-        disbatch({ type: SEARCH_USERS, payload: {search: data.users}})
+      if(data.status === ok){
+        disbatch({ type: GET_CONTACTS, payload: {contacts: data.contacts}})
       }
     })
   }

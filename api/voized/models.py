@@ -26,6 +26,8 @@ class User(db.Model):
         friends.c.friend == id), secondaryjoin=(friends.c.user == id), lazy="dynamic")
     rooms = db.relationship("Room", secondary=groups, backref=db.backref(
         "members", lazy="dynamic"), lazy="dynamic")
+    calls = db.relationship("Calls", lazy="dynamic")
+    voice_mails = db.relationship("VoiceMails", lazy="dynamic")
 
     def __init__(self, username, password, email):
         self.username = username
@@ -105,6 +107,7 @@ class Room(db.Model):
     category = db.Column(db.String(64), default="general", nullable=False)
     description = db.Column(db.String, nullable=True)
     created_at = db.Column(db.Integer, nullable=False)
+    calls = db.relationship("GroupCalls", backref="group", lazy="dynamic")
 
     def __init__(self, name, category="general", description=None, group_image=None,):
         self.name = name
@@ -155,6 +158,19 @@ class GroupCalls(db.Model, CallMixins):
     to = db.relationship("User", secondary=group_calls, backref=db.backref(
         "room_calls", lazy="dynamic"), primaryjoin=(group_calls.c.user_id == id), 
         secondaryjoin=(group_calls.c.room_id == id), lazy="dynamic")
+    
+    def add_user(self, user):
+        if not in_call(user):
+            self.to.append(user)
+            db.session.commit()
+    
+    def remove_user(self, user):
+        if in_call(user):
+            self.to.remove(user)
+            db.session.commit()
+
+    def in_call(self, user):
+        return self.to.filter( group_calls.c.user_id == user.id ).count() > 0
 
 
 class VoiceMails(db.Model, CallMixins):

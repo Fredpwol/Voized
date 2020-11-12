@@ -10,6 +10,8 @@ import { presetPrimaryColors } from "@ant-design/colors";
 import { Switch, Route, Link, Redirect, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
 import ImageUploader from "react-images-upload";
+import socket from "socket.io-client";
+
 
 import Feed from "./screens/main/Feed";
 import Contact from "./screens/main/Contact";
@@ -20,6 +22,8 @@ import UserScreen from "./screens/main/UserScreen";
 import { getNameInitials } from "./utils";
 import { uploadImage, toggleNewRegister, getContacts } from "./actions";
 import AvatarUpload from "./components/AvatarUpload";
+import { io } from "./utils/client";
+import CallModal from "./components/CallModal";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -31,7 +35,14 @@ const App = (props) => {
   useEffect(() => {
     props.getContacts(props.user.id, props.user.token)
   },[props.user.id])
-  
+
+  useEffect(() => {
+    io.emit("set:user", {id : props.user.id})
+    return () => {
+      io.disconnect();
+    };
+  }, []);
+
   const getMenuData = (username) => {
     return [
       {
@@ -71,12 +82,6 @@ const App = (props) => {
     setCollapsed(collapsed);
   };
 
-  const onDrop = (picture) => {
-    const form = new FormData();
-    form.append("file", picture[0]);
-    console.log(form);
-    props.uploadImage(form, props.user.id, props.user.token);
-  };
   return !props.user.isAuthenticated ? (
     <Auth>
       <Switch>
@@ -101,6 +106,7 @@ const App = (props) => {
           <AvatarUpload />
         </div>
       </Modal>
+      <CallModal isvisible />
       <Sider
         collapsible
         collapsed={collapsed}

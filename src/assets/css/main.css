@@ -15,6 +15,7 @@
 }
 .center-text{
     text-align: center;
+    padding-top: 5px;
 }
 .profile-bg{
     background: linear-gradient(#002766, #0265c2);
@@ -59,4 +60,21 @@
 body{
     overflow: hidden;
     height: 100%;
+}
+.modal-header{
+    height: 450px;
+    padding: 20px;
+}
+.icon-button{
+    width: fit-content;
+    border-radius: 50%;
+    font-size: 40px;
+    padding-right: 10px;
+    padding-left: 10px;
+    color: white;
+}
+.inline-buttons{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px;
 }

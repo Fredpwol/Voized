@@ -2,10 +2,11 @@ import React from "react";
 import { Avatar, Modal, Typography } from "antd";
 import { PhoneFilled } from "@ant-design/icons";
 import { presetPrimaryColors } from "@ant-design/colors";
+import { getNameInitials } from "../utils";
+import { createAnswer, rejectOffer, stopCall } from "../utils/client";
 
-const img =
-  "http://localhost:5000/static/profile_pic/a2f83e7c1f0465c161864661db8711d1a775cfcc3394961549947f0884dc0c14.jpg";
-const CallModal = ({ isvisible, caller }) => {
+const CallModal = ({ isvisible, caller, offer, userId }) => {
+  console.log(offer, "offer");
   return (
     <Modal
       centered
@@ -13,29 +14,42 @@ const CallModal = ({ isvisible, caller }) => {
       closable={false}
       footer={null}
       bodyStyle={{
-        backgroundImage: `linear-gradient(rgba(64, 169, 255, 0.5), rgba(9, 48, 102)), url(${img})`,
+        backgroundImage: `linear-gradient(rgba(64, 169, 255, 0.5), rgba(9, 48, 102)), url(${caller?.profile_pic})`,
         backgroundSize: "cover",
-        backgroundColor: presetPrimaryColors["orange"],
+        backgroundColor: presetPrimaryColors[caller?.bg_color],
       }}
     >
       <div className="modal-header">
         <div className="center-item">
           <Avatar
             size={{ xs: 130, sm: 140, md: 150, lg: 160, xl: 170, xxl: 180 }}
-            src={img}
+            src={caller?.profile_pic}
+            style={{ backgroundColor: caller?.bg_color, fontSize:"100px" }}
           >
-            D
+            {getNameInitials(caller?.username)}
           </Avatar>
         </div>
-        <Typography.Title className="center-text">Daniel</Typography.Title>
+        <Typography.Title className="center-text">
+          {caller?.username}
+        </Typography.Title>
         <div className="inline-buttons">
+          {offer?.from !== userId ? (
+            <div className="icon-button" style={{ backgroundColor: "#37de28" }}>
+              <PhoneFilled onClick={() => createAnswer()} />
+            </div>
+          ) : null}
           <div className="icon-button" style={{ backgroundColor: "red" }}>
-            <PhoneFilled rotate={220} />
-          </div>
-          <div className="icon-button" style={{ backgroundColor: "#37de28" }}>
-            <PhoneFilled />
+            <PhoneFilled rotate={220} onClick={() => {
+              if(offer?.from !== userId){
+                rejectOffer()
+              }
+              else{
+                stopCall()
+              }
+            }} />
           </div>
         </div>
+        <audio id="call-audio" />
       </div>
     </Modal>
   );

@@ -26,8 +26,10 @@ class User(db.Model):
         friends.c.friend == id), secondaryjoin=(friends.c.user == id), lazy="dynamic")
     rooms = db.relationship("Room", secondary=groups, backref=db.backref(
         "members", lazy="dynamic"), lazy="dynamic")
-    calls = db.relationship("Calls", lazy="dynamic")
-    voice_mails = db.relationship("VoiceMails", lazy="dynamic")
+    call_sent = db.relationship("Calls", lazy="dynamic", foreign_keys="Calls.caller" )
+    call_recived = db.relationship("Calls", lazy="dynamic", foreign_keys="Calls.reciever" )
+    voice_mails_recieved = db.relationship("VoiceMails", lazy="dynamic", foreign_keys="VoiceMails.reciever" )
+    voice_mails_sent = db.relationship("VoiceMails", lazy="dynamic", foreign_keys="VoiceMails.caller" )
 
     def __init__(self, username, password, email):
         self.username = username
@@ -138,10 +140,19 @@ class Room(db.Model):
 
 class CallMixins:
     id = db.Column(db.Integer, primary_key=True)
-    at = db.Column(db.Integer, nullable=False)
-    duration = db.Column(db.Integer, nullable=True)
-    ended = db.Column(db.Integer, nullable=True)
-    status = db.Column(db.String, nullable=False)
+    at = db.Column(db.Float, nullable=False)
+    duration = db.Column(db.Float, nullable=True)
+    ended = db.Column(db.Float, nullable=True)
+    status = db.Column(db.String, default="missed", nullable=False)
+
+
+    def get_attributes(self):
+        res = []
+        attrs = [attr for attr in dir(self) if not (attr.startswith("__") and attr.endswith("__"))]
+        for args in attrs:
+            if type(getattr(self, args)) in [int, float, str]:
+                res.append(args)
+        return res
 
 
 class Calls(db.Model, CallMixins):

@@ -23,17 +23,27 @@ io.on("connection" , (socket) => {
     })
     socket.on("offer:made", (data) => {
         if(user[data.to]){
-            io.to(user[data.to]).emit("offer:sent", { offer: data.offer, from: data.from})
+            console.log("offer received from "+ data.from)
+            io.to(user[data.to]).emit("offer:recieved", data)
         }
         else{
-            socket.emit("error", "Sorry User is not Available")
+            socket.emit("unAvaiblable", "Sorry User is not Available")
         }
        
+    })
+    socket.on("call:cutted", data => {
+        io.to(user[data.to]).emit("call:cutted")
     })
     socket.on("answer", (data) => {
         if (user[data.to]){
             io.to(user[data.to]).emit("answer:made", { answer: data.answer})
         }
+        else{
+            socket.emit("unAvaiblable", "Sorry User is not Available")
+        }
+    })
+    socket.on("offer:regected", (data) => {
+        io.to(user[data.to]).emit("regected")
     })
     socket.on("disconnect", () => {
         console.log("Connnection Lost with user")

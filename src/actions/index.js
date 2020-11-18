@@ -2,7 +2,7 @@ import { LOGIN_ERROR, LOGIN_USER, LOGGING_IN, LOGOUT_USER, SIGNUP_USER, SIGNUP_E
 
 
 
-const ok = "success";
+export const ok = "success";
 
 export const loginUser = ({ username, password }) => {
   return (disbatch) => {

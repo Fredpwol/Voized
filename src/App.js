@@ -106,7 +106,7 @@ const App = (props) => {
           <AvatarUpload />
         </div>
       </Modal>
-      <CallModal isvisible />
+      <CallModal isvisible={props.callData.ringing} caller={props.callData.recipient} offer={props.callData.offer} userId={props.user.id} />
       <Sider
         collapsible
         collapsed={collapsed}
@@ -149,6 +149,7 @@ const App = (props) => {
 const mapStateToProps = (state) => ({
   user: state.auth,
   appData: state.appData,
+  callData: state.callData
 });
 
 export default connect(mapStateToProps, { uploadImage, toggleNewRegister, getContacts })(

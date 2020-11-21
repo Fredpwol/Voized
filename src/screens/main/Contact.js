@@ -1,15 +1,19 @@
-import React from "react";
-import { Typography, Layout, Input } from "antd";
+import React, { useState } from "react";
+import { Typography, Layout, Input, Image } from "antd";
 import { connect } from "react-redux";
 
 import UserItem from "../../components/UserItem";
 import Divider from "../../components/Divider";
 import { searchUsers } from "../../actions";
 import { getNameInitials } from "../../utils";
+import ErrorImage from "../../assets/images/searchError.jpg";
+import Empty from "../../assets/images/emptyContact.jpg";
+import NotifyImage from "../../components/NotifyImage";
 
 {/* <a href='https://www.freepik.com/vectors/coffee'>Coffee vector created by pch.vector - www.freepik.com</a> 
 <a href='https://www.freepik.com/vectors/background'>Background vector created by tartila - www.freepik.com</a>*/}
 const Contact = ({ user, userData, searchUsers }) => {
+  const [search, setSearch] = useState("");
   return (
     <div className="content-body">
       <Layout.Header className="content-head">
@@ -18,7 +22,10 @@ const Contact = ({ user, userData, searchUsers }) => {
           placeholder="Type in to Search..."
           enterButton
           style={{ width: "40%" }}
-          onChange={(e) => searchUsers(e.target.value, user.token)}
+          onChange={(e) => {
+            setSearch(e.target.value)
+            searchUsers(e.target.value, user.token)
+          }}
         />
       </Layout.Header>
       <Divider />
@@ -35,8 +42,9 @@ const Contact = ({ user, userData, searchUsers }) => {
             _id={result._id}
             body={result.email}
           />
-        )) : userData.contacts.map((contact, index) => (
-            <UserItem
+        )) : userData.contacts.length !== 0 ? userData.contacts.map((contact, index) => (
+            search == "" ? (
+              <UserItem
               key={contact.username+index}
               title={contact.username}
               image={{
@@ -46,7 +54,16 @@ const Contact = ({ user, userData, searchUsers }) => {
               }}
               _id={contact._id}
               body={contact.email}
-            />)) }
+            />
+            ): 
+            null
+            )):(
+              !search && <NotifyImage image={Empty} alt="No Contacts" title="You have no contacts search to add contacts" />
+            )
+           }
+            {search !== "" & userData.search.length === 0 ? (
+              <NotifyImage image={ErrorImage} alt="No Search Found" title={"No Search Found"} />
+            ):null }
       </div>
     </div>
   );

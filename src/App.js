@@ -24,6 +24,7 @@ import { uploadImage, toggleNewRegister, getContacts } from "./actions";
 import AvatarUpload from "./components/AvatarUpload";
 import { io } from "./utils/client";
 import CallModal from "./components/CallModal";
+import CallScreen from "./screens/main/CallScreen";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -106,7 +107,7 @@ const App = (props) => {
           <AvatarUpload />
         </div>
       </Modal>
-      <CallModal isvisible={props.callData.ringing} caller={props.callData.recipient} offer={props.callData.offer} userId={props.user.id} />
+      <CallModal isvisible={props.callData.ringing} caller={props.callData.recipient[0]} offer={props.callData.offer} userId={props.user.id} />
       <Sider
         collapsible
         collapsed={collapsed}
@@ -131,6 +132,7 @@ const App = (props) => {
       <Layout className="site-layout" style={{marginLeft:(collapsed ? "80px" :"200px")}} >
         {/* <Header className="site-layout-background" style={{ padding: 0 }} /> */}
         <Content className="content-body">
+          <CallScreen isvisible />
           <Switch>
             <Route exact path="/" component={Feed} />
             <Route path="/contact" component={Contact} />

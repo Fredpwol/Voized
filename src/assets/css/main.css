@@ -78,3 +78,37 @@ body{
     justify-content: space-around;
     margin-top: 50px;
 }
+.search-error{
+    background-image: url("../images/searchError.jpg");
+    background-size: 500px, 500px;
+    height: 100px;
+    background-repeat: no-repeat;
+}
+.call-body{
+    min-height: 90vh;
+    height:100%;
+    width:100%;
+}
+.wrap-list{
+    flex-wrap: wrap;
+}
+.call-card{
+    border:1px solid white;
+    padding:20px;
+    border-radius: 10px;
+}
+.floating-actions{
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    background-color: rgba(51, 53, 54, 0.712);
+    bottom: 20%;
+    left: 42%;
+}
+.floating-action-btn{
+    padding-top:10px; 
+    height:50px;
+    width:50px; 
+    margin: 5px;
+    font-size:30px; 
+}

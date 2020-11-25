@@ -4,6 +4,8 @@ import { blue } from "@ant-design/colors";
 import { AudioMutedOutlined, PhoneFilled, PauseOutlined } from "@ant-design/icons";
 import { getNameInitials } from "../../utils";
 import { stopCall } from "../../utils/client";
+import RecordBtn from "../../assets/images/recording.svg";
+import Timer from "../../components/Timer";
 
 const CallScreen = ({ isvisible, caller }) => {
   return (
@@ -40,6 +42,10 @@ const CallScreen = ({ isvisible, caller }) => {
           </div>
         </div>
         <div className="floating-actions">
+        <Timer style={{fontSize:"30px", color:"white",marginTop:"8px", paddingLeft:"15px", paddingRight:"15px"}} />
+        <div className="center-item floating-action-btn">
+            <img src={RecordBtn} />
+          </div>
         <div className="center-item floating-action-btn">
             <PauseOutlined />
           </div>

@@ -40,12 +40,7 @@ const CallModal = ({ isvisible, caller, offer, userId }) => {
           ) : null}
           <div className="icon-button" style={{ backgroundColor: "red" }}>
             <PhoneFilled rotate={220} onClick={() => {
-              if(offer?.from !== userId){
                 rejectOffer()
-              }
-              else{
-                stopCall()
-              }
             }} />
           </div>
         </div>

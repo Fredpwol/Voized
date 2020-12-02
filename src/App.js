@@ -107,6 +107,7 @@ const App = (props) => {
           <AvatarUpload />
         </div>
       </Modal>
+      <CallScreen isvisible={props.callData.onCall} collapsed={collapsed} caller={props.callData.recipient[0]} />
       <CallModal isvisible={props.callData.ringing} caller={props.callData.recipient[0]} offer={props.callData.offer} userId={props.user.id} />
       <Sider
         collapsible
@@ -132,7 +133,6 @@ const App = (props) => {
       <Layout className="site-layout" style={{marginLeft:(collapsed ? "80px" :"200px")}} >
         {/* <Header className="site-layout-background" style={{ padding: 0 }} /> */}
         <Content className="content-body">
-          <CallScreen isvisible />
           <Switch>
             <Route exact path="/" component={Feed} />
             <Route path="/contact" component={Contact} />

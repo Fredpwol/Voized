@@ -1,4 +1,4 @@
-import { RINGING, SET_OFFER, STOP_RINGING, SET_ANSWER, CLEAR_RECIPIENT, SET_PEER } from "../actions/constants";
+import { RINGING, SET_OFFER, STOP_RINGING, SET_ANSWER, CLEAR_RECIPIENT, SET_PEER, SET_CALL_STATUS } from "../actions/constants";
 
 const initialState = {calls: [], onCall: false, ringing: false, peer:{}, timeElapsed: 0, recipient: [], offer: {}, answer:{} }
 
@@ -16,6 +16,8 @@ export default function CallReducer(state=initialState, action){
             return {...state, recipient: {}}
         case SET_PEER:
             return {...state, peer: action.payload}
+        case SET_CALL_STATUS:
+            return {...state, onCall: action.payload}
         default:
             return state;        
     }

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 
 import UserItem from "../../components/UserItem";
 import Divider from "../../components/Divider";
+import Header from "../../components/Header";
 import { searchUsers } from "../../actions";
 import { getNameInitials } from "../../utils";
 import ErrorImage from "../../assets/images/searchError.jpg";
@@ -16,9 +17,7 @@ const Contact = ({ user, userData, searchUsers }) => {
   const [search, setSearch] = useState("");
   return (
     <div className="content-body">
-      <Layout.Header className="content-head">
-        <h1 className="title-text">Contacts</h1>
-        <Input.Search
+      <Header title="Contacts" leftComponent={( <Input.Search
           placeholder="Type in to Search..."
           enterButton
           style={{ width: "40%" }}
@@ -26,8 +25,7 @@ const Contact = ({ user, userData, searchUsers }) => {
             setSearch(e.target.value)
             searchUsers(e.target.value, user.token)
           }}
-        />
-      </Layout.Header>
+        />)} />
       <Divider />
       <div style={{ paddingTop: "10px" }}>
         {userData.search.length !== 0 ? userData.search.map((result, index) => (

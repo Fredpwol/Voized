@@ -18,3 +18,4 @@ export const STOP_RINGING = "STOP_RINGING";
 export const SET_ANSWER = "SET_ANSWER";
 export const CLEAR_RECIPIENT = "CLEAR_RECIPIENT";
 export const SET_PEER = "SET_PEER";
+export const SET_CALL_STATUS = "SET_CALL_STATUS";

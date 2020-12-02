@@ -7,6 +7,7 @@ import {
   CLEAR_RECIPIENT,
   RINGING,
   SET_CALL_ID,
+  SET_CALL_STATUS,
   SET_OFFER,
   SET_PEER,
   STOP_RINGING,
@@ -48,6 +49,7 @@ io.on("call:cutted", () => {
   store.dispatch({ type: SET_PEER, payload: null });
   store.dispatch({ type: SET_OFFER, payload: null });
   store.dispatch({ type: STOP_RINGING });
+  store.dispatch({type: SET_CALL_STATUS, payload:false})
   store.dispatch({ type: CLEAR_RECIPIENT });
 });
 
@@ -73,12 +75,14 @@ export function createAnswer() {
       player.srcObject = stream;
     });
     player.play();
-
+    store.dispatch({ type: STOP_RINGING });
+    store.dispatch({type: SET_CALL_STATUS, payload:true})
     io.on("callended", () => {
       peer.destroy();
       store.dispatch({ type: SET_PEER, payload: null });
       store.dispatch({ type: SET_OFFER, payload: null });
       store.dispatch({ type: STOP_RINGING });
+      store.dispatch({type: SET_CALL_STATUS, payload:false})
       store.dispatch({ type: CLEAR_RECIPIENT });
     });
   });
@@ -133,20 +137,23 @@ export function createOffer(id, userId, callback) {
                       store.dispatch({ type: RINGING, payload: userData.user });
                     });
                     store.dispatch({ type: SET_PEER, payload: peer });
-                    peer.on("stream", (stream) => {
-                      player.srcObject = stream;
-                    });
-                    player.play();
 
                     io.on("answer:made", (data) => {
                       console.log("Answer", data);
+                      store.dispatch({ type: STOP_RINGING });
+                      store.dispatch({type: SET_CALL_STATUS, payload:true})
                       peer.signal(data.answer);
+                      peer.on("stream", (stream) => {
+                        player.srcObject = stream;
+                      });
+                      player.play();
                     });
                     io.on("callended", () => {
                       peer.destroy();
                       store.dispatch({ type: SET_PEER, payload: null });
                       store.dispatch({ type: SET_OFFER, payload: null });
                       store.dispatch({ type: STOP_RINGING });
+                      store.dispatch({type: SET_CALL_STATUS, payload:false})
                       store.dispatch({ type: CLEAR_RECIPIENT });
                     });
                     io.on("regected", () => {
@@ -177,5 +184,6 @@ export function stopCall() {
   store.dispatch({ type: SET_OFFER, payload: null });
   store.dispatch({ type: SET_PEER, payload: null });
   store.dispatch({ type: STOP_RINGING });
+  store.dispatch({type: SET_CALL_STATUS, payload:false})
   store.dispatch({ type: CLEAR_RECIPIENT });
 }

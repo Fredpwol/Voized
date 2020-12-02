@@ -1,10 +1,11 @@
 import React from 'react';
+import Header from '../../components/Header';
 
 
 const Feed = () => {
     return(
-        <div>
-            Recent Activity
+        <div className="content-body">
+            <Header title="Activities" />
         </div>
     )
 };

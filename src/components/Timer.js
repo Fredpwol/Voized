@@ -10,11 +10,10 @@ const zFormat = (string) => {
     return res;
 }
 
-const Timer = ({style}) => {
+const Timer = ({style, start}) => {
     const [seconds, setSeconds] = useState(0);
     const [minutes, setMinutes] = useState(0);
     const [hours, setHours] = useState(0)
-    const [start, setStart] = useState(new Date());
 
 
    var myVar = setInterval(myTimer, 1000);

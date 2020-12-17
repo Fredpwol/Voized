@@ -1,4 +1,4 @@
-import { LOGIN_ERROR, LOGIN_USER, LOGGING_IN, LOGOUT_USER, SIGNUP_USER, SIGNUP_ERROR, NEW_REGISTER, NEW_PROFILE_IMAGE, GET_CONTACTS, SEARCH_USERS, CLEAR_SEARCH } from "./constants";
+import { LOGIN_ERROR, LOGIN_USER, LOGGING_IN, LOGOUT_USER, SIGNUP_USER, SIGNUP_ERROR, NEW_REGISTER, NEW_PROFILE_IMAGE, GET_CONTACTS, SEARCH_USERS, CLEAR_SEARCH, SET_CALLS } from "./constants";
 
 
 
@@ -157,6 +157,22 @@ export const addContact = (id, token) => {
     .then(data => {
       if(data.status === ok){
         disbatch({ type: GET_CONTACTS, payload: {contacts: data.contacts}})
+      }
+    })
+  }
+}
+
+export const fetchCalls = (id, token) => {
+  return (disbatch) => {
+    fetch(`/user/${id}/calls`, {
+      headers: new Headers({
+        "Authorization" : "Basic " + btoa(`${token}:no-password`)
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === ok){
+        disbatch({ type: SET_CALLS, payload: data.calls })
       }
     })
   }

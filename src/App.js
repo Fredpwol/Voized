@@ -20,7 +20,7 @@ import SignUp from "./screens/auth/SignUp";
 import Auth from "./screens/auth/Auth";
 import UserScreen from "./screens/main/UserScreen";
 import { getNameInitials } from "./utils";
-import { uploadImage, toggleNewRegister, getContacts } from "./actions";
+import { uploadImage, toggleNewRegister, getContacts, fetchCalls } from "./actions";
 import AvatarUpload from "./components/AvatarUpload";
 import { io } from "./utils/client";
 import CallModal from "./components/CallModal";
@@ -35,6 +35,7 @@ const App = (props) => {
 
   useEffect(() => {
     props.getContacts(props.user.id, props.user.token)
+    props.fetchCalls(props.user.id, props.user.token)
   },[props.user.id])
 
   useEffect(() => {
@@ -154,6 +155,6 @@ const mapStateToProps = (state) => ({
   callData: state.callData
 });
 
-export default connect(mapStateToProps, { uploadImage, toggleNewRegister, getContacts })(
+export default connect(mapStateToProps, { uploadImage, toggleNewRegister, getContacts, fetchCalls })(
   App
 );

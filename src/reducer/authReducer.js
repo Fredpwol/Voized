@@ -88,14 +88,7 @@ export default function (state = initialState, action){
       localStorage.setItem("email", "")
       localStorage.removeItem("isAuthenticated")
       localStorage.setItem("bgColor","" )
-      return {
-        ...state,
-        username: "",
-        password: "",
-        email: "",
-        token: null,
-        isAuthenticated:false,
-      }
+      return initialState;
     case NEW_PROFILE_IMAGE:
       localStorage.setItem("profileImage", action.payload.path);
       return {

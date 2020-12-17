@@ -25,7 +25,8 @@ export default function userDataReducer(state = initialState, action) {
                 ...state,
                 search: []
             }
-
+        case  LOGOUT_USER:
+            return initialState;
         default:
             return state;
     }

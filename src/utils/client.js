@@ -39,18 +39,23 @@ io.on("offer:recieved", (offer) => {
       if (data.status === ok) {
         store.dispatch({ type: SET_OFFER, payload: offer });
         store.dispatch({ type: RINGING, payload: data.user });
+        store.dispatch({ type: SET_CALL_ID, payload: offer.callID})
       }
     });
 });
 
 io.on("call:cutted", () => {
   const state = store.getState();
-  state.callData.peer.destroy();
   store.dispatch({ type: SET_PEER, payload: null });
   store.dispatch({ type: SET_OFFER, payload: null });
   store.dispatch({ type: STOP_RINGING });
   store.dispatch({type: SET_CALL_STATUS, payload:false})
   store.dispatch({ type: CLEAR_RECIPIENT });
+  fetch(`call/${state.callData.callId}/set?status=missed`, { 
+    headers : new Headers({
+    "Authorization": "Basic " + btoa(`${state.auth.token}:no-password`)
+  }),} )
+  store.dispatch({type: SET_CALL_ID, payload:null})
 });
 
 io.on("unAvaiblable", (data) => {
@@ -58,6 +63,7 @@ io.on("unAvaiblable", (data) => {
     store.dispatch({ type: SET_PEER, payload: null });
     store.dispatch({ type: SET_OFFER, payload: null });
     store.dispatch({ type: STOP_RINGING });
+    store.dispatch({type: SET_CALL_ID, payload:null})
   }, 2000);
   message.error(data, 3);
 });
@@ -70,6 +76,10 @@ export function createAnswer() {
     peer.on("signal", (data) => {
       io.emit("answer", { answer: data, to: state.callData.offer.from });
     });
+    fetch(`call/${state.callData.callId}/set?status=recieved`, { 
+      headers : new Headers({
+      "Authorization": "Basic " + btoa(`${state.auth.token}:no-password`)
+    }),})
     peer.signal(state.callData.offer.offer);
     peer.on("stream", (stream) => {
       player.srcObject = stream;
@@ -84,6 +94,7 @@ export function createAnswer() {
       store.dispatch({ type: STOP_RINGING });
       store.dispatch({type: SET_CALL_STATUS, payload:false})
       store.dispatch({ type: CLEAR_RECIPIENT });
+      store.dispatch({type: SET_CALL_ID, payload:null})
     });
   });
 }
@@ -107,6 +118,7 @@ export function createOffer(id, userId, callback) {
       .then((res) => res.json())
       .then((call) => {
         if (call.status === ok) {
+          store.dispatch({type: SET_CALL_ID, payload: call.id})
           fetch(`/user/${id}`, {
             headers: new Headers({
               Authorization: "Basic " + btoa(`${state.auth.token}:no-password`),
@@ -176,10 +188,13 @@ export function createOffer(id, userId, callback) {
   }
 }
 
-export function stopCall() {
+export function stopCall(duration, ended) {
   const state = store.getState();
   console.log("cutted!!");
-  state.callData.peer.destroy();
+  fetch(`call/${state.callData.callId}/set?duration=${duration}&ended=${ended}`, { 
+    headers : new Headers({
+    "Authorization": "Basic " + btoa(`${state.auth.token}:no-password`)
+  }),})
   io.emit("call:cutted", { to: state.callData.offer.to });
   store.dispatch({ type: SET_OFFER, payload: null });
   store.dispatch({ type: SET_PEER, payload: null });

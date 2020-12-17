@@ -47,6 +47,12 @@ class User(db.Model):
             "profile_pic": url_for("static", filename="profile_pic/"+self.profile_pic, _external=True) if self.profile_pic else "",
         }
 
+    # @staticmethod
+    def get_calls(self):
+        calls = Calls.query.filter_by(caller=self.id).union(Calls.query.filter_by(reciever=self.id)).order_by(Calls.at.desc())
+        serialized_calls = [ call.serialize for call in calls ]
+        return serialized_calls
+
     def validate_password(self, password):
         return bcrypt.check_password_hash(self.password, password)
 
@@ -150,7 +156,7 @@ class CallMixins:
         res = []
         attrs = [attr for attr in dir(self) if not (attr.startswith("__") and attr.endswith("__"))]
         for args in attrs:
-            if type(getattr(self, args)) in [int, float, str]:
+            if type(getattr(self, args)) in [int, float, str] or getattr(self, args) == None:
                 res.append(args)
         return res
 
@@ -160,6 +166,17 @@ class Calls(db.Model, CallMixins):
     caller = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     reciever = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
 
+    @property
+    def serialize(self):
+        return {
+            "id": self.id,
+            "at": self.at,
+            "duration": self.duration,
+            "ended": self.ended,
+            "status": self.status,
+            "caller": User.query.get(self.caller).serialize,
+            "receiver": User.query.get(self.reciever).serialize
+        }
 
 class GroupCalls(db.Model, CallMixins):
     __tablename__ = "room_calls"

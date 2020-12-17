@@ -178,7 +178,7 @@ def new_call(caller, reciever):
     return jsonify(id=call.id, status=ok), 201
 
 
-@app.route("/call/<int:id>/set")
+@app.route("/call/<int:id>/set", methods=["PUT"])
 @auth.login_required
 def set_call(id):
     """
@@ -187,14 +187,32 @@ def set_call(id):
     will set the call.ended to 12334.22 and call.duration to 523.2
     valid arguments are the same as call primitive types attributes
     """
-    call = Call.query.get(id)
+    mutable_fields = {"duration":{ "type" : float, }, "ended": { "type": float }, "status":{ "type": str, "only":["missed", "recieved"]}}
+    call = Calls.query.get(id)
     for args in request.args:
-        if args in call.get_attributes():
+        if (args in call.get_attributes() and args in mutable_fields.keys()):
             try:
-                setattr(call, args, request.args[args])
+                value = mutable_fields[args]["type"](request.args[args])
+                if  not ("only" in mutable_fields[args] and request.args[args] in mutable_fields[args]["only"]):
+                    return jsonify(status=error, message=f"{args} can only take {mutable_fields[args]['only']} as arguments")
+                setattr(call, args, value)
                 db.session.commit()
             except Exception as e:
                 return jsonify(status=error, message=str(e)), 400
         else:
-            return jsonify(status=error, message=f"{arg} is not an valid call argument"), 400
-    return jsonify(status=ok), 200
+            return jsonify(status=error, message=f"{args} is not an valid call argument"), 400
+    return jsonify(status=ok, call=call.serialize), 200
+
+@app.route("/user/<int:id>/calls")
+@auth.login_required
+def get_user_calls(id):
+    return jsonify(calls=User.query.get(id).get_calls(), status=ok), 200
+
+@app.route("/call/<int:id>")
+def get_call(id):
+    call = Calls.query.get(id)
+    return jsonify(call=call.serialize)
+
+@app.route("/")
+def index():
+    return "Hello World" 

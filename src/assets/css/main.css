@@ -112,3 +112,7 @@ body{
     margin: 5px;
     font-size:30px; 
 }
+.capitalize{
+    text-transform: capitalize;
+    margin-top: 5px;
+}

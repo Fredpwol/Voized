@@ -69,7 +69,7 @@ const CallScreen = ({ isvisible, caller, collapsed }) => {
             className="center-item floating-action-btn"
             style={{ backgroundColor: "red" }}
           >
-            <PhoneFilled onClick={() => stopCall()} />
+            <PhoneFilled onClick={() => stopCall(new Date() - start, Date.now() / 1000)} />
           </div>
         </div>
       </div>

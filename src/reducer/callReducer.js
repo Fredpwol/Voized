@@ -13,7 +13,7 @@ export default function CallReducer(state=initialState, action){
         case SET_ANSWER:
             return {...state, answer: action.payload}
         case CLEAR_RECIPIENT:
-            return {...state, recipient: {}}
+            return {...state, recipient: []}
         case SET_PEER:
             return {...state, peer: action.payload}
         case SET_CALL_STATUS:

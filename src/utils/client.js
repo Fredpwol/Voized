@@ -46,12 +46,14 @@ io.on("offer:recieved", (offer) => {
 
 io.on("call:cutted", () => {
   const state = store.getState();
+  state.callData.peer.signal("")
   store.dispatch({ type: SET_PEER, payload: null });
   store.dispatch({ type: SET_OFFER, payload: null });
   store.dispatch({ type: STOP_RINGING });
   store.dispatch({type: SET_CALL_STATUS, payload:false})
   store.dispatch({ type: CLEAR_RECIPIENT });
-  fetch(`call/${state.callData.callId}/set?status=missed`, { 
+  fetch(`call/${state.callData.callId}/set?status=missed`, {
+    method:"PUT",
     headers : new Headers({
     "Authorization": "Basic " + btoa(`${state.auth.token}:no-password`)
   }),} )
@@ -76,7 +78,8 @@ export function createAnswer() {
     peer.on("signal", (data) => {
       io.emit("answer", { answer: data, to: state.callData.offer.from });
     });
-    fetch(`call/${state.callData.callId}/set?status=recieved`, { 
+    fetch(`call/${state.callData.callId}/set?status=recieved`, {
+      method:"PUT", 
       headers : new Headers({
       "Authorization": "Basic " + btoa(`${state.auth.token}:no-password`)
     }),})
@@ -190,15 +193,18 @@ export function createOffer(id, userId, callback) {
 
 export function stopCall(duration, ended) {
   const state = store.getState();
+  state.callData.peer.signal("")
   console.log("cutted!!");
-  fetch(`call/${state.callData.callId}/set?duration=${duration}&ended=${ended}`, { 
+  fetch(`call/${state.callData.callId}/set?duration=${duration}&ended=${ended}`, {
+    method:"PUT", 
     headers : new Headers({
     "Authorization": "Basic " + btoa(`${state.auth.token}:no-password`)
-  }),})
-  io.emit("call:cutted", { to: state.callData.offer.to });
-  store.dispatch({ type: SET_OFFER, payload: null });
-  store.dispatch({ type: SET_PEER, payload: null });
-  store.dispatch({ type: STOP_RINGING });
-  store.dispatch({type: SET_CALL_STATUS, payload:false})
-  store.dispatch({ type: CLEAR_RECIPIENT });
+  }),}).then(() => {
+    io.emit("call:cutted", { to: state.callData.offer.to });
+    store.dispatch({ type: SET_OFFER, payload: null });
+    store.dispatch({ type: SET_PEER, payload: null });
+    store.dispatch({ type: STOP_RINGING });
+    store.dispatch({type: SET_CALL_STATUS, payload:false})
+    store.dispatch({ type: CLEAR_RECIPIENT });
+  })
 }

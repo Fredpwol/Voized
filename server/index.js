@@ -34,6 +34,9 @@ io.on("connection" , (socket) => {
     socket.on("call:cutted", data => {
         io.to(user[data.to]).emit("call:cutted")
     })
+    socket.on("callended", data => {
+        io.to(user[data.to]).emit("callended")
+    })
     socket.on("answer", (data) => {
         if (user[data.to]){
             io.to(user[data.to]).emit("answer:made", { answer: data.answer})

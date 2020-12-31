@@ -187,14 +187,14 @@ def set_call(id):
     will set the call.ended to 12334.22 and call.duration to 523.2
     valid arguments are the same as call primitive types attributes
     """
-    mutable_fields = {"duration":{ "type" : float, }, "ended": { "type": float }, "status":{ "type": str, "only":["missed", "recieved"]}}
+    mutable_fields = {"duration":{ "type" : float }, "ended": { "type": float }, "status":{ "type": str, "only":["missed", "recieved"]}}
     call = Calls.query.get(id)
     for args in request.args:
         if (args in call.get_attributes() and args in mutable_fields.keys()):
             try:
                 value = mutable_fields[args]["type"](request.args[args])
-                if  not ("only" in mutable_fields[args] and request.args[args] in mutable_fields[args]["only"]):
-                    return jsonify(status=error, message=f"{args} can only take {mutable_fields[args]['only']} as arguments")
+                if ("only" in mutable_fields[args] and (not request.args[args] in mutable_fields[args]["only"])):
+                    return jsonify(status=error, message=f"{args} can only take {mutable_fields[args]['only']} as arguments"), 400
                 setattr(call, args, value)
                 db.session.commit()
             except Exception as e:

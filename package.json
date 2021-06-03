@@ -64,6 +64,5 @@
     "appId": "com.Voized"
   },
   "main": "public/electron.js",
-  "homepage": "./",
-  "proxy": "http://localhost:5000"
+  "homepage": "./"
 }

@@ -18,6 +18,7 @@ psycopg2 = "*"
 flask-script = "*"
 python-dotenv = "*"
 pillow = "*"
+flask-cors = "*"
 
 [requires]
 python_version = "3.8"

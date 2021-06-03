@@ -10,8 +10,10 @@ export const NEW_PROFILE_IMAGE = "NEW_PROFILE_IMAGE";
 export const GET_CONTACTS = "GET_CONTACTS";
 export const SEARCH_USERS = "SEARCH_USERS";
 export const CLEAR_SEARCH = "CLEAR_SEARCH";
+export const REGISTERING = "REGISTERING"
 
-
+export const SET_TRACKS = "SET_TRACKS"
+export const SET_STREAM = "SET_STREAM"
 export const RINGING = "RINGING";
 export const SET_OFFER = "SET_OFFER";
 export const STOP_RINGING = "STOP_RINGING";

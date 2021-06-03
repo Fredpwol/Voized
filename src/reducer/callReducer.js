@@ -1,6 +1,6 @@
-import { RINGING, SET_OFFER, STOP_RINGING, SET_ANSWER, CLEAR_RECIPIENT, SET_PEER, SET_CALL_STATUS, SET_CALL_ID, SET_CALLS, LOGOUT_USER } from "../actions/constants";
+import { RINGING, SET_STREAM, SET_OFFER, STOP_RINGING, SET_ANSWER, CLEAR_RECIPIENT, SET_PEER, SET_CALL_STATUS, SET_CALL_ID, SET_CALLS, LOGOUT_USER } from "../actions/constants";
 
-const initialState = {calls: [], onCall: false, ringing: false, peer:{}, timeElapsed: 0, recipient: [], offer: {}, answer:{}, callId:null }
+const initialState = {calls: [], onCall: false, ringing: false, peer:null, timeElapsed: 0, recipient: [], offer: {}, answer:{}, callId:null, stream:null }
 
 export default function CallReducer(state=initialState, action){
     switch (action.type){
@@ -20,6 +20,8 @@ export default function CallReducer(state=initialState, action){
             return {...state, onCall: action.payload}
         case SET_CALL_ID:
             return { ...state, callId: action.payload}
+        case SET_STREAM:
+            return {...state, stream: action.payload}
         case SET_CALLS:
             return {...state, calls: action.payload }
         case LOGOUT_USER:

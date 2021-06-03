@@ -61,6 +61,9 @@ const columns = [
   {
     title: "Duration",
     dataIndex: "duration",
+    render: (item) => (
+      <Typography.Text>{Math.round(item / (60 *1000))} mins : { item % 60} secs </Typography.Text>
+    )
   },
   {
     title: "Date",

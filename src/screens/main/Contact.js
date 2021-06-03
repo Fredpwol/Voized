@@ -41,7 +41,7 @@ const Contact = ({ user, userData, searchUsers }) => {
             body={result.email}
           />
         )) : userData.contacts.length !== 0 ? userData.contacts.map((contact, index) => (
-            search == "" ? (
+            search === "" ? (
               <UserItem
               key={contact.username+index}
               title={contact.username}

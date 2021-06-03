@@ -78,6 +78,9 @@ beforeUpload(file) {
       </ImageCrop>
      <div style={{marginLeft:"15px"}}>
      <p>{this.state.file ? this.state.file.name : null}</p>
+     <p>
+       Click to Upload Image
+     </p>
       <Button type="primary" onClick={this.uploadImage} loading={loading}>
         Upload
       </Button>

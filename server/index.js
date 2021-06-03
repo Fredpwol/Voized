@@ -24,12 +24,15 @@ io.on("connection" , (socket) => {
     socket.on("offer:made", (data) => {
         if(user[data.to]){
             console.log("offer received from "+ data.from)
-            io.to(user[data.to]).emit("offer:recieved", data)
+            io.to(user[data.to]).emit("offer:made", data)
         }
         else{
             socket.emit("unAvaiblable", "Sorry User is not Available")
         }
        
+    })
+    socket.on("ice-candidate", data => {
+        io.to(user[data.to]).emit("ice-candidate", data)
     })
     socket.on("call:cutted", data => {
         io.to(user[data.to]).emit("call:cutted")

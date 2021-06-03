@@ -12,7 +12,6 @@ groups = db.Table("groups", db.Column("user_id", db.Integer, db.ForeignKey(
 group_calls = db.Table("group_calls", db.Column("room_id", db.Integer, db.ForeignKey(
     "rooms.id")), db.Column("user_id", db.Integer, db.ForeignKey("users.id")))
 
-
 class User(db.Model):
     __tablename__ = "users"
 
@@ -106,7 +105,6 @@ class User(db.Model):
     def __repr__(self):
         return f"User({self.username})"
 
-
 class Room(db.Model):
     __tablename__ = "rooms"
     id = db.Column(db.Integer, primary_key=True)
@@ -116,6 +114,8 @@ class Room(db.Model):
     description = db.Column(db.String, nullable=True)
     created_at = db.Column(db.Integer, nullable=False)
     calls = db.relationship("GroupCalls", backref="group", lazy="dynamic")
+    messages = str()
+    in_call = bool()
 
     def __init__(self, name, category="general", description=None, group_image=None,):
         self.name = name

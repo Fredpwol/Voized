@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 
-import { LOGGING_IN, LOGIN_ERROR, LOGIN_USER, LOGOUT_USER, NEW_PROFILE_IMAGE, SIGNUP_ERROR, SIGNUP_USER } from "../actions/constants";
+import { LOGGING_IN, LOGIN_ERROR, LOGIN_USER, LOGOUT_USER, NEW_PROFILE_IMAGE, REGISTERING, SIGNUP_ERROR, SIGNUP_USER } from "../actions/constants";
 
 const initialState = {
   id: localStorage.getItem("id"),
@@ -12,6 +12,7 @@ const initialState = {
   loginError:"",
   signupError:"",
   loggingIn:false,
+  registering: false,
   userBgColor:localStorage.getItem("bgColor"),
   profileImage: localStorage.getItem("profileImage")
 };
@@ -38,6 +39,7 @@ export default function (state = initialState, action){
         profileImage: action.payload.profileImage,
         isAuthenticated: true,
         loggingIn:false,
+        registering: false,
         loginError:""
       };
     
@@ -74,12 +76,17 @@ export default function (state = initialState, action){
       return{
         ...state,
         signupError: action.payload.message,
-        loggingIn:false
+        registering: false
       }
     case LOGGING_IN:
       return{
         ...state,
         loggingIn:true
+      }
+    case REGISTERING:
+      return {
+        ...state,
+        registering : true,
       }
     case LOGOUT_USER:
       localStorage.setItem("token", "")

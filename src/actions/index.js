@@ -1,5 +1,5 @@
 import { LOGIN_ERROR, LOGIN_USER, LOGGING_IN, LOGOUT_USER, SIGNUP_USER, SIGNUP_ERROR, NEW_REGISTER, NEW_PROFILE_IMAGE, GET_CONTACTS, SEARCH_USERS, CLEAR_SEARCH, SET_CALLS } from "./constants";
-
+import { API_ENDPOINT } from "../utils";
 
 
 export const ok = "success";
@@ -7,7 +7,7 @@ export const ok = "success";
 export const loginUser = ({ username, password }) => {
   return (disbatch) => {
     disbatch({ type: LOGGING_IN });
-    fetch("/user/login", {
+    fetch(`${API_ENDPOINT}/user/login`, {
       method: "POST",
       headers: new Headers({
         "Content-Type": "application/json",
@@ -41,7 +41,7 @@ export const loginUser = ({ username, password }) => {
 export const signupUser = ({ username, password, email }) => {
   return (disbatch) => {
     disbatch({ type: LOGGING_IN });
-    fetch("/user/register", {
+    fetch(`${API_ENDPOINT}/user/register`, {
       method: "POST",
       headers: new Headers({
         "Content-Type": "application/json",
@@ -82,7 +82,7 @@ export const logoutUser = () => {
 
 export const uploadImage = (form, id, token, callback) => {
   return (disbatch) => {
-    fetch(`/user/${id}/profile-pic/upload`, {
+    fetch(`${API_ENDPOINT}/user/${id}/profile-pic/upload`, {
       method: "POST",
       headers: new Headers({
         "Authorization": "Basic " + btoa(`${token}:no-password`)
@@ -110,7 +110,7 @@ export const toggleNewRegister = () => (
 
 export const getContacts = ( id, token ) => {
   return (disbatch) => {
-    fetch(`/user/${id}/contacts`, 
+    fetch(`${API_ENDPOINT}/user/${id}/contacts`, 
     {
       headers: new Headers({
         "Authorization" : "Basic " + btoa(`${token}:no-password`)
@@ -128,7 +128,7 @@ export const getContacts = ( id, token ) => {
 export const searchUsers = (username, token) => {
   return (disbatch) => {
     if (username !== ""){
-      fetch(`/user/search?q=${username}`, {
+      fetch(`${API_ENDPOINT}/user/search?q=${username}`, {
         headers: new Headers({
           "Authorization" : "Basic " + btoa(`${token}:no-password`)
         })
@@ -148,7 +148,7 @@ export const searchUsers = (username, token) => {
 
 export const addContact = (id, token) => {
   return (disbatch) => {
-    fetch(`/user/contacts/new?id=${id}`, {
+    fetch(`${API_ENDPOINT}/user/contacts/new?id=${id}`, {
       headers: new Headers({
         "Authorization" : "Basic " + btoa(`${token}:no-password`)
       })
@@ -164,7 +164,7 @@ export const addContact = (id, token) => {
 
 export const fetchCalls = (id, token) => {
   return (disbatch) => {
-    fetch(`/user/${id}/calls`, {
+    fetch(`${API_ENDPOINT}/user/${id}/calls`, {
       headers: new Headers({
         "Authorization" : "Basic " + btoa(`${token}:no-password`)
       })

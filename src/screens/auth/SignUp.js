@@ -97,7 +97,7 @@ const SignUp = ({ errorMessage, submitting, signupUser }) => {
             shape="round"
             loading={submitting}
           >
-            Submit
+            Sign Up
           </Button>
           <p style={{ marginTop: "10px" }}>
             Already have an account? <Link to="/">Login</Link>
@@ -110,6 +110,6 @@ const SignUp = ({ errorMessage, submitting, signupUser }) => {
 
 const mapStateToProps = (state) => ({
   errorMessage: state.auth.signupError,
-  submitting: state.auth.loggingIn,
+  submitting: state.auth.registering,
 });
 export default connect(mapStateToProps, { signupUser })(SignUp);

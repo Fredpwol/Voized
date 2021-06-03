@@ -21,6 +21,7 @@ node_modules
 testout.wav
 .vscode/
 static/
+*-backup.*
 
 npm-debug.log*
 yarn-debug.log*

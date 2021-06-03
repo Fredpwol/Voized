@@ -1,4 +1,5 @@
 import { presetPrimaryColors } from "@ant-design/colors";
+import { ok } from "../actions";
 
 export const getNameInitials = (name) => {
   let initials = [];
@@ -31,3 +32,13 @@ export const getRandomColor = () => {
   let color = colors[index];
   return presetPrimaryColors[color];
 };
+
+export const API_ENDPOINT = "http://127.0.0.1:5000/";
+
+export function checkStatus(data, callback){
+  if (data.status === ok){
+    return true;
+  }
+  callback && callback(data.message)
+  return false;
+}

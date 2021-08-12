@@ -1,0 +1,13 @@
+pipwin
+flask
+flask-login
+flask-sqlalchemy
+flask-httpauth
+bcrypt
+flask-bcrypt
+flask-migrate
+psycopg2
+flask-script
+python-dotenv
+pillow
+flask-cors

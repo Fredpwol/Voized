@@ -27,12 +27,15 @@ io.on("connection" , (socket) => {
             io.to(user[data.to]).emit("offer:made", data)
         }
         else{
-            socket.emit("unAvaiblable", "Sorry User is not Available")
+            socket.emit("unavailable", "Sorry User is not Available")
         }
        
     })
     socket.on("ice-candidate", data => {
         io.to(user[data.to]).emit("ice-candidate", data)
+    })
+    socket.on("unavailable", data => {
+        io.to(user[data.to]).emit("unavailable", data)
     })
     socket.on("call:cutted", data => {
         io.to(user[data.to]).emit("call:cutted")
@@ -42,10 +45,10 @@ io.on("connection" , (socket) => {
     })
     socket.on("answer", (data) => {
         if (user[data.to]){
-            io.to(user[data.to]).emit("answer:made", { answer: data.answer})
+            io.to(user[data.to]).emit("answer", data)
         }
         else{
-            socket.emit("unAvaiblable", "Sorry User is not Available")
+            socket.emit("unavailable", "Sorry User is not Available")
         }
     })
     socket.on("offer:regected", (data) => {

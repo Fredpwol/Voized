@@ -11,6 +11,7 @@ import {
   SET_CALLS,
   LOGOUT_USER,
   SET_TRACKS,
+  SET_ICE_CANDIDATE,
 } from "../actions/constants";
 
 const initialState = {
@@ -25,6 +26,7 @@ const initialState = {
   callId: null,
   stream: null,
   tracks: [],
+  iceCandidate: null
 };
 
 export default function CallReducer(state = initialState, action) {
@@ -39,6 +41,8 @@ export default function CallReducer(state = initialState, action) {
       return { ...state, offer: action.payload };
     case STOP_RINGING:
       return { ...state, ringing: false };
+    case SET_ICE_CANDIDATE:
+      return {...state, iceCandidate: action.payload}
     case SET_ANSWER:
       return { ...state, answer: action.payload };
     case CLEAR_RECIPIENT:

@@ -12,6 +12,7 @@ export const SEARCH_USERS = "SEARCH_USERS";
 export const CLEAR_SEARCH = "CLEAR_SEARCH";
 export const REGISTERING = "REGISTERING"
 
+export const SET_ICE_CANDIDATE = "SET_ICE_CANDIDATE";
 export const SET_TRACKS = "SET_TRACKS"
 export const SET_STREAM = "SET_STREAM"
 export const RINGING = "RINGING";

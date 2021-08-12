@@ -16,21 +16,22 @@ const UserScreen = ({
   return (
     <div>
       <div className="profile-bg">
-        <div style={{ border: "1px" }}>
+      </div>
+              <div style={{ border: "1px" }}>
+          <center>
           <Avatar
             src={profileImage}
             size={{ xs: 24, sm: 40, md: 90, lg: 130, xl: 160, xxl: 200 }}
             style={{
-              bottom: "-100px",
-              marginLeft: "15px",
               fontSize: "15vh",
+              bottom:"50px",
               backgroundColor: presetPrimaryColors[userBgColor],
             }}
           >
             {getNameInitials(username)}
           </Avatar>
-        </div>
-        <CameraOutlined
+
+          <CameraOutlined
           onClick={toggleNewRegister}
           style={{
             position: "relative",
@@ -39,12 +40,14 @@ const UserScreen = ({
             zIndex: 10,
           }}
         />
+          </center>
+          
+        </div>
         <Typography.Title
           style={{ color: "#ffffff", marginLeft: "20%", marginBottom: "5px" }}
         >
           {username}
         </Typography.Title>
-      </div>
       <div>
         <Button
           type="primary"

@@ -15,7 +15,7 @@ import {
   STOP_RINGING,
 } from "../actions/constants";
 
-export const ENDPOINT = "http://localhost:5050";
+export const ENDPOINT = "https://blooming-mountain-45752.herokuapp.com";
 
 let iceConfig ={
   iceServers: [

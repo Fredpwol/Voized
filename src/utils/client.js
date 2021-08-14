@@ -15,7 +15,7 @@ import {
   STOP_RINGING,
 } from "../actions/constants";
 
-export const ENDPOINT = "https://blooming-mountain-45752.herokuapp.com";
+export const ENDPOINT = "http://localhost:5050";
 
 let iceConfig ={
   iceServers: [
@@ -56,12 +56,16 @@ io.on("answer", (data) => {
     const tracks = stream.getTracks();
     tracks.forEach((track) => state.callData.peer.addTrack(track, stream) )
   });
+  state.callData.peer.ontrack = (e) => {
+    console.log("sender peer tracks", e.track)
+    store.dispatch({type: SET_TRACKS, payload: e.track});
+    audioStream.addTrack(e.track);
+  };
   player.play();
 });
 
 io.on("ice-candidate", (data) => {
   const state = store.getState();
-  console.log("ice candidate recieved")
   if (Boolean(state.callData.peer)){
     state.callData.peer
     .addIceCandidate(new RTCIceCandidate(data.candidate))
@@ -144,11 +148,6 @@ export function createOffer(id, userID, callback) {
               console.log("ice candidate created", e.candidate)
               e.candidate && io.emit("ice-candidate", { to: id, candidate: e.candidate });
             };
-            peer.ontrack = (e) => {
-              console.log("sender peer tracks", e.track)
-              store.dispatch({type: SET_TRACKS, payload: e.track});
-              audioStream.addTrack(e.track);
-            };
             peer.addTransceiver("audio")
             store.dispatch({ type: SET_PEER, payload: peer });
             var state = store.getState();
@@ -197,32 +196,29 @@ export function createAnswer() {
   //   console.log("ice candidate created", e.candidate)
   //   io.emit("ice-candidate", { to: state.callData.recipient[0].id, candidate: e.candidate });
   // };
-  if (state.callData.iceCandidate){
-    console.log("stored candidate", state.callData.iceCandidate)
-    peer.addIceCandidate(new RTCIceCandidate(state.callData.iceCandidate))
-  }
   peer.setRemoteDescription(new RTCSessionDescription(state.callData.offer)).then(() => {
+    if (state.callData.iceCandidate){
+      peer.addIceCandidate(new RTCIceCandidate(state.callData.iceCandidate))
+    }
     peer.createAnswer().then((sdp) => {
       const answer = new RTCSessionDescription(sdp);
       peer.setLocalDescription(answer).then(() => {
-        console.log("remote", peer.currentRemoteDescription)
-        console.log("local", peer.currentLocalDescription)
       });
       io.emit("answer", { from: state.auth.id, to: state.callData.recipient[0].id, answer });
+      navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+        fetch(`${API_ENDPOINT}/call/${state.callData.callId}/set?status=recieved`, {
+          method: "PUT",
+          headers: new Headers({
+            Authorization: "Basic " + btoa(`${state.auth.token}:no-password`),
+          }),
+        });
+        const tracks = stream.getTracks();
+        tracks.forEach((track) => peer.addTrack(track, stream))// send tracks to the other user
+      });
     });
   });
   store.dispatch({ type: STOP_RINGING });
   store.dispatch({type: SET_CALL_STATUS, payload:true})
-  navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-    fetch(`${API_ENDPOINT}/call/${state.callData.callId}/set?status=recieved`, {
-      method: "PUT",
-      headers: new Headers({
-        Authorization: "Basic " + btoa(`${state.auth.token}:no-password`),
-      }),
-    });
-    const tracks = stream.getTracks();
-    tracks.forEach((track) => peer.addTrack(track, stream))// send tracks to the other user
-  });
 
   player.play();
   peer.ontrack = (e) => {

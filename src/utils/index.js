@@ -33,7 +33,7 @@ export const getRandomColor = () => {
   return presetPrimaryColors[color];
 };
 
-export const API_ENDPOINT = "https://blooming-mountain-45752.herokuapp.com/";
+export const API_ENDPOINT = "https://blooming-mountain-45752.herokuapp.com";
 
 export function checkStatus(data, callback){
   if (data.status === ok){
